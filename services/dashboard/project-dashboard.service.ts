@@ -202,11 +202,12 @@ export async function getProjectDashboardData(projectId: string): Promise<Dashbo
 
   // Single traversal over all sessions to aggregate statistics and center performances
   allSessions.forEach((s) => {
-    const isCompleted = s.status === "COMPLETED";
+    const isPhysicallyCompleted = s.status === "COMPLETED";
+    const isCompleted = s.status === "COMPLETED" && s.approvalStatus === "APPROVED";
     const isCancelled = s.status === "CANCELLED";
     const isSessionDelayed =
       s.status === "DELAYED" ||
-      (!isCompleted && !isCancelled && new Date(s.scheduledDate) < now);
+      (!isPhysicallyCompleted && !isCancelled && new Date(s.scheduledDate) < now);
 
     // General counters
     if (isCompleted) completedSessions++;

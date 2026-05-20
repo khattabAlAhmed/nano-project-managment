@@ -153,6 +153,15 @@ Update this file after every meaningful implementation change.
   - [x] Integrate execution modal into the Center Manager Workspace Operational Action Queue cards (making them interactive clicks) and datatable rows
   - [x] Integrate execution modal into the global Sessions registry table Actions column
   - [x] Verify production build passes with 0 TypeScript compiler errors and 0 warnings
+- Feature 16: Session Approval Workflow
+  - [x] Create reusable notification triggers in `lib/notification-hooks.ts` with database inserts
+  - [x] Implement `GET /api/projects/[projectId]/approvals` secure API endpoint with queue and recent history logs
+  - [x] Implement `PATCH /api/sessions/[sessionId]/approval` with Project Manager guards, non-empty rejection notes check, and atomic ApprovalRecord creation
+  - [x] Update project and center dashboard metrics services to require PM approval for progress calculations
+  - [x] Build frontend Approvals Page UI with metrics ribbon, queue datatable with search and filters, and sidebar decisions feed
+  - [x] Build interactive `ReviewDialog` with Drive links and validation error handling
+  - [x] Verify production build compiles with 0 TypeScript/Lint compiler errors
+
 
 ## In Progress
 
@@ -183,6 +192,8 @@ Update this file after every meaningful implementation change.
 - Feature 13: Built the operational Gantt Timeline View using `frappe-gantt` as the rendering engine, wrapped in a custom React component with SSR-safe dynamic imports. Created a dedicated timeline data service (`services/timeline/`) with activity-grouped and center-grouped task aggregation. Styled all Gantt bars using design token CSS variables mapped to session statuses (pending, completed, delayed, approved, rejected). Implemented a full toolbar with Activity/Session view switching, Activity/Center grouping, and Week/Month/Quarter zoom controls. Added click-to-preview detail dialog, summary metric cards, status legend, and mobile-responsive fallback list view.
 - Feature 14: Created modular, center-scoped `services/center-dashboard/` query helper service mapping target manager ids. Exposed secure authenticated API route under `GET /api/center/dashboard`. Built premium custom operational dashboard component featuring: multi-metric grids, progress summaries, action queues (awaiting docs, revisions, executions) and full client-side search datatables. Conditional redirection mapped inside top-level dashboard layout using Clerk metadata profiles.
 - Feature 15: Implemented secure scheduled session execution handlers under `PATCH /api/sessions/[sessionId]/execute` checking assigned physical center manager scopes. Created shared `SessionExecutionDialog` component supporting full state adjustments, notes logs, Google Drive folder validation, and approval submissions. Integrated execution dialogues across dashboard queues, list metrics, and global registry grids with real-time UI synchronization.
+- Feature 16: Implemented dual-endpoint approvals workflow under `GET /api/projects/[projectId]/approvals` and `PATCH /api/sessions/[sessionId]/approval` with Project Manager validations, transactionally recording history in the `ApprovalRecord` model. Updated the project and center dashboard services to require explicit `APPROVED` state for completion metrics. Built premium approvals queue table workspace with overdue filters and sidebar audit history feeds.
+
 
 
 

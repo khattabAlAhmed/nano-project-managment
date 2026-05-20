@@ -173,7 +173,9 @@ export async function getCenterDashboardData(userId: string): Promise<CenterDash
   // Calculate Overview & Summary details
   const activeSessions = mappedSessions.filter((s) => s.status !== "CANCELLED");
   const totalCount = activeSessions.length;
-  const completedCount = activeSessions.filter((s) => s.status === "COMPLETED").length;
+  const completedCount = activeSessions.filter(
+    (s) => s.status === "COMPLETED" && s.approvalStatus === "APPROVED"
+  ).length;
   const delayedCount = activeSessions.filter((s) => s.isDelayed).length;
   const pendingApprovalsCount = activeSessions.filter(
     (s) => s.approvalStatus === "PENDING_APPROVAL"
