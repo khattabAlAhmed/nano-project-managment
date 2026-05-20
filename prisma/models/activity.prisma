@@ -1,19 +1,41 @@
 // Activity — project-level planning entity
 
 model Activity {
-  id                  String   @id @default(cuid())
+  id                  String           @id @default(cuid())
   projectId           String
   title               String
   description         String?
-  plannedSessionCount Int      @default(0)
-  isVolunteer         Boolean  @default(false)
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  plannedSessionCount Int              @default(1)
+  isVolunteer         Boolean          @default(false)
+  startDate           DateTime?
+  endDate             DateTime?
+  archivedAt          DateTime?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
 
   // Relations
-  project  Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  sessions Session[]
+  project         Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  sessions        Session[]
+  activityCenters ActivityCenter[]
 
   @@index([projectId])
   @@index([isVolunteer])
+}
+
+// ActivityCenter — join table for activity-center participation
+
+model ActivityCenter {
+  id         String   @id @default(cuid())
+  activityId String
+  centerId   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  activity Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  center   Center   @relation(fields: [centerId], references: [id], onDelete: Cascade)
+
+  @@unique([activityId, centerId])
+  @@index([activityId])
+  @@index([centerId])
 }

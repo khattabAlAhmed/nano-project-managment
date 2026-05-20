@@ -385,6 +385,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   Activity: 'Activity',
+  ActivityCenter: 'ActivityCenter',
   ApprovalRecord: 'ApprovalRecord',
   Center: 'Center',
   ProjectCenter: 'ProjectCenter',
@@ -407,7 +408,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "activity" | "approvalRecord" | "center" | "projectCenter" | "notification" | "project" | "session" | "user"
+    modelProps: "activity" | "activityCenter" | "approvalRecord" | "center" | "projectCenter" | "notification" | "project" | "session" | "user"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -482,6 +483,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ActivityCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ActivityCountAggregateOutputType> | number
+        }
+      }
+    }
+    ActivityCenter: {
+      payload: Prisma.$ActivityCenterPayload<ExtArgs>
+      fields: Prisma.ActivityCenterFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ActivityCenterFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityCenterPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ActivityCenterFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityCenterPayload>
+        }
+        findFirst: {
+          args: Prisma.ActivityCenterFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityCenterPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ActivityCenterFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityCenterPayload>
+        }
+        findMany: {
+          args: Prisma.ActivityCenterFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityCenterPayload>[]
+        }
+        create: {
+          args: Prisma.ActivityCenterCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityCenterPayload>
+        }
+        createMany: {
+          args: Prisma.ActivityCenterCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ActivityCenterCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityCenterPayload>[]
+        }
+        delete: {
+          args: Prisma.ActivityCenterDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityCenterPayload>
+        }
+        update: {
+          args: Prisma.ActivityCenterUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityCenterPayload>
+        }
+        deleteMany: {
+          args: Prisma.ActivityCenterDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ActivityCenterUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ActivityCenterUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityCenterPayload>[]
+        }
+        upsert: {
+          args: Prisma.ActivityCenterUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityCenterPayload>
+        }
+        aggregate: {
+          args: Prisma.ActivityCenterAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateActivityCenter>
+        }
+        groupBy: {
+          args: Prisma.ActivityCenterGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ActivityCenterGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ActivityCenterCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ActivityCenterCountAggregateOutputType> | number
         }
       }
     }
@@ -1049,11 +1124,25 @@ export const ActivityScalarFieldEnum = {
   description: 'description',
   plannedSessionCount: 'plannedSessionCount',
   isVolunteer: 'isVolunteer',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  archivedAt: 'archivedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type ActivityScalarFieldEnum = (typeof ActivityScalarFieldEnum)[keyof typeof ActivityScalarFieldEnum]
+
+
+export const ActivityCenterScalarFieldEnum = {
+  id: 'id',
+  activityId: 'activityId',
+  centerId: 'centerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ActivityCenterScalarFieldEnum = (typeof ActivityCenterScalarFieldEnum)[keyof typeof ActivityCenterScalarFieldEnum]
 
 
 export const ApprovalRecordScalarFieldEnum = {
@@ -1428,6 +1517,7 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   activity?: Prisma.ActivityOmit
+  activityCenter?: Prisma.ActivityCenterOmit
   approvalRecord?: Prisma.ApprovalRecordOmit
   center?: Prisma.CenterOmit
   projectCenter?: Prisma.ProjectCenterOmit

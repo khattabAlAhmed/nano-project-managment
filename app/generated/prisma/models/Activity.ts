@@ -41,6 +41,9 @@ export type ActivityMinAggregateOutputType = {
   description: string | null
   plannedSessionCount: number | null
   isVolunteer: boolean | null
+  startDate: Date | null
+  endDate: Date | null
+  archivedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -52,6 +55,9 @@ export type ActivityMaxAggregateOutputType = {
   description: string | null
   plannedSessionCount: number | null
   isVolunteer: boolean | null
+  startDate: Date | null
+  endDate: Date | null
+  archivedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -63,6 +69,9 @@ export type ActivityCountAggregateOutputType = {
   description: number
   plannedSessionCount: number
   isVolunteer: number
+  startDate: number
+  endDate: number
+  archivedAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -84,6 +93,9 @@ export type ActivityMinAggregateInputType = {
   description?: true
   plannedSessionCount?: true
   isVolunteer?: true
+  startDate?: true
+  endDate?: true
+  archivedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -95,6 +107,9 @@ export type ActivityMaxAggregateInputType = {
   description?: true
   plannedSessionCount?: true
   isVolunteer?: true
+  startDate?: true
+  endDate?: true
+  archivedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -106,6 +121,9 @@ export type ActivityCountAggregateInputType = {
   description?: true
   plannedSessionCount?: true
   isVolunteer?: true
+  startDate?: true
+  endDate?: true
+  archivedAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -204,6 +222,9 @@ export type ActivityGroupByOutputType = {
   description: string | null
   plannedSessionCount: number
   isVolunteer: boolean
+  startDate: Date | null
+  endDate: Date | null
+  archivedAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: ActivityCountAggregateOutputType | null
@@ -238,10 +259,14 @@ export type ActivityWhereInput = {
   description?: Prisma.StringNullableFilter<"Activity"> | string | null
   plannedSessionCount?: Prisma.IntFilter<"Activity"> | number
   isVolunteer?: Prisma.BoolFilter<"Activity"> | boolean
+  startDate?: Prisma.DateTimeNullableFilter<"Activity"> | Date | string | null
+  endDate?: Prisma.DateTimeNullableFilter<"Activity"> | Date | string | null
+  archivedAt?: Prisma.DateTimeNullableFilter<"Activity"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Activity"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Activity"> | Date | string
   project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
   sessions?: Prisma.SessionListRelationFilter
+  activityCenters?: Prisma.ActivityCenterListRelationFilter
 }
 
 export type ActivityOrderByWithRelationInput = {
@@ -251,10 +276,14 @@ export type ActivityOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   plannedSessionCount?: Prisma.SortOrder
   isVolunteer?: Prisma.SortOrder
+  startDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  endDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   project?: Prisma.ProjectOrderByWithRelationInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
+  activityCenters?: Prisma.ActivityCenterOrderByRelationAggregateInput
 }
 
 export type ActivityWhereUniqueInput = Prisma.AtLeast<{
@@ -267,10 +296,14 @@ export type ActivityWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Activity"> | string | null
   plannedSessionCount?: Prisma.IntFilter<"Activity"> | number
   isVolunteer?: Prisma.BoolFilter<"Activity"> | boolean
+  startDate?: Prisma.DateTimeNullableFilter<"Activity"> | Date | string | null
+  endDate?: Prisma.DateTimeNullableFilter<"Activity"> | Date | string | null
+  archivedAt?: Prisma.DateTimeNullableFilter<"Activity"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Activity"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Activity"> | Date | string
   project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
   sessions?: Prisma.SessionListRelationFilter
+  activityCenters?: Prisma.ActivityCenterListRelationFilter
 }, "id">
 
 export type ActivityOrderByWithAggregationInput = {
@@ -280,6 +313,9 @@ export type ActivityOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   plannedSessionCount?: Prisma.SortOrder
   isVolunteer?: Prisma.SortOrder
+  startDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  endDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ActivityCountOrderByAggregateInput
@@ -299,6 +335,9 @@ export type ActivityScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Activity"> | string | null
   plannedSessionCount?: Prisma.IntWithAggregatesFilter<"Activity"> | number
   isVolunteer?: Prisma.BoolWithAggregatesFilter<"Activity"> | boolean
+  startDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Activity"> | Date | string | null
+  endDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Activity"> | Date | string | null
+  archivedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Activity"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Activity"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Activity"> | Date | string
 }
@@ -309,10 +348,14 @@ export type ActivityCreateInput = {
   description?: string | null
   plannedSessionCount?: number
   isVolunteer?: boolean
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   project: Prisma.ProjectCreateNestedOneWithoutActivitiesInput
   sessions?: Prisma.SessionCreateNestedManyWithoutActivityInput
+  activityCenters?: Prisma.ActivityCenterCreateNestedManyWithoutActivityInput
 }
 
 export type ActivityUncheckedCreateInput = {
@@ -322,9 +365,13 @@ export type ActivityUncheckedCreateInput = {
   description?: string | null
   plannedSessionCount?: number
   isVolunteer?: boolean
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutActivityInput
+  activityCenters?: Prisma.ActivityCenterUncheckedCreateNestedManyWithoutActivityInput
 }
 
 export type ActivityUpdateInput = {
@@ -333,10 +380,14 @@ export type ActivityUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannedSessionCount?: Prisma.IntFieldUpdateOperationsInput | number
   isVolunteer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   project?: Prisma.ProjectUpdateOneRequiredWithoutActivitiesNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutActivityNestedInput
+  activityCenters?: Prisma.ActivityCenterUpdateManyWithoutActivityNestedInput
 }
 
 export type ActivityUncheckedUpdateInput = {
@@ -346,9 +397,13 @@ export type ActivityUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannedSessionCount?: Prisma.IntFieldUpdateOperationsInput | number
   isVolunteer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutActivityNestedInput
+  activityCenters?: Prisma.ActivityCenterUncheckedUpdateManyWithoutActivityNestedInput
 }
 
 export type ActivityCreateManyInput = {
@@ -358,6 +413,9 @@ export type ActivityCreateManyInput = {
   description?: string | null
   plannedSessionCount?: number
   isVolunteer?: boolean
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -368,6 +426,9 @@ export type ActivityUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannedSessionCount?: Prisma.IntFieldUpdateOperationsInput | number
   isVolunteer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -379,6 +440,9 @@ export type ActivityUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannedSessionCount?: Prisma.IntFieldUpdateOperationsInput | number
   isVolunteer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -390,6 +454,9 @@ export type ActivityCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   plannedSessionCount?: Prisma.SortOrder
   isVolunteer?: Prisma.SortOrder
+  startDate?: Prisma.SortOrder
+  endDate?: Prisma.SortOrder
+  archivedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -405,6 +472,9 @@ export type ActivityMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   plannedSessionCount?: Prisma.SortOrder
   isVolunteer?: Prisma.SortOrder
+  startDate?: Prisma.SortOrder
+  endDate?: Prisma.SortOrder
+  archivedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -416,12 +486,20 @@ export type ActivityMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   plannedSessionCount?: Prisma.SortOrder
   isVolunteer?: Prisma.SortOrder
+  startDate?: Prisma.SortOrder
+  endDate?: Prisma.SortOrder
+  archivedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type ActivitySumOrderByAggregateInput = {
   plannedSessionCount?: Prisma.SortOrder
+}
+
+export type ActivityScalarRelationFilter = {
+  is?: Prisma.ActivityWhereInput
+  isNot?: Prisma.ActivityWhereInput
 }
 
 export type ActivityListRelationFilter = {
@@ -432,11 +510,6 @@ export type ActivityListRelationFilter = {
 
 export type ActivityOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type ActivityScalarRelationFilter = {
-  is?: Prisma.ActivityWhereInput
-  isNot?: Prisma.ActivityWhereInput
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -459,8 +532,26 @@ export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type ActivityCreateNestedOneWithoutActivityCentersInput = {
+  create?: Prisma.XOR<Prisma.ActivityCreateWithoutActivityCentersInput, Prisma.ActivityUncheckedCreateWithoutActivityCentersInput>
+  connectOrCreate?: Prisma.ActivityCreateOrConnectWithoutActivityCentersInput
+  connect?: Prisma.ActivityWhereUniqueInput
+}
+
+export type ActivityUpdateOneRequiredWithoutActivityCentersNestedInput = {
+  create?: Prisma.XOR<Prisma.ActivityCreateWithoutActivityCentersInput, Prisma.ActivityUncheckedCreateWithoutActivityCentersInput>
+  connectOrCreate?: Prisma.ActivityCreateOrConnectWithoutActivityCentersInput
+  upsert?: Prisma.ActivityUpsertWithoutActivityCentersInput
+  connect?: Prisma.ActivityWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ActivityUpdateToOneWithWhereWithoutActivityCentersInput, Prisma.ActivityUpdateWithoutActivityCentersInput>, Prisma.ActivityUncheckedUpdateWithoutActivityCentersInput>
 }
 
 export type ActivityCreateNestedManyWithoutProjectInput = {
@@ -519,15 +610,95 @@ export type ActivityUpdateOneRequiredWithoutSessionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ActivityUpdateToOneWithWhereWithoutSessionsInput, Prisma.ActivityUpdateWithoutSessionsInput>, Prisma.ActivityUncheckedUpdateWithoutSessionsInput>
 }
 
+export type ActivityCreateWithoutActivityCentersInput = {
+  id?: string
+  title: string
+  description?: string | null
+  plannedSessionCount?: number
+  isVolunteer?: boolean
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  project: Prisma.ProjectCreateNestedOneWithoutActivitiesInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutActivityInput
+}
+
+export type ActivityUncheckedCreateWithoutActivityCentersInput = {
+  id?: string
+  projectId: string
+  title: string
+  description?: string | null
+  plannedSessionCount?: number
+  isVolunteer?: boolean
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutActivityInput
+}
+
+export type ActivityCreateOrConnectWithoutActivityCentersInput = {
+  where: Prisma.ActivityWhereUniqueInput
+  create: Prisma.XOR<Prisma.ActivityCreateWithoutActivityCentersInput, Prisma.ActivityUncheckedCreateWithoutActivityCentersInput>
+}
+
+export type ActivityUpsertWithoutActivityCentersInput = {
+  update: Prisma.XOR<Prisma.ActivityUpdateWithoutActivityCentersInput, Prisma.ActivityUncheckedUpdateWithoutActivityCentersInput>
+  create: Prisma.XOR<Prisma.ActivityCreateWithoutActivityCentersInput, Prisma.ActivityUncheckedCreateWithoutActivityCentersInput>
+  where?: Prisma.ActivityWhereInput
+}
+
+export type ActivityUpdateToOneWithWhereWithoutActivityCentersInput = {
+  where?: Prisma.ActivityWhereInput
+  data: Prisma.XOR<Prisma.ActivityUpdateWithoutActivityCentersInput, Prisma.ActivityUncheckedUpdateWithoutActivityCentersInput>
+}
+
+export type ActivityUpdateWithoutActivityCentersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plannedSessionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  isVolunteer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneRequiredWithoutActivitiesNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutActivityNestedInput
+}
+
+export type ActivityUncheckedUpdateWithoutActivityCentersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plannedSessionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  isVolunteer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutActivityNestedInput
+}
+
 export type ActivityCreateWithoutProjectInput = {
   id?: string
   title: string
   description?: string | null
   plannedSessionCount?: number
   isVolunteer?: boolean
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutActivityInput
+  activityCenters?: Prisma.ActivityCenterCreateNestedManyWithoutActivityInput
 }
 
 export type ActivityUncheckedCreateWithoutProjectInput = {
@@ -536,9 +707,13 @@ export type ActivityUncheckedCreateWithoutProjectInput = {
   description?: string | null
   plannedSessionCount?: number
   isVolunteer?: boolean
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutActivityInput
+  activityCenters?: Prisma.ActivityCenterUncheckedCreateNestedManyWithoutActivityInput
 }
 
 export type ActivityCreateOrConnectWithoutProjectInput = {
@@ -577,6 +752,9 @@ export type ActivityScalarWhereInput = {
   description?: Prisma.StringNullableFilter<"Activity"> | string | null
   plannedSessionCount?: Prisma.IntFilter<"Activity"> | number
   isVolunteer?: Prisma.BoolFilter<"Activity"> | boolean
+  startDate?: Prisma.DateTimeNullableFilter<"Activity"> | Date | string | null
+  endDate?: Prisma.DateTimeNullableFilter<"Activity"> | Date | string | null
+  archivedAt?: Prisma.DateTimeNullableFilter<"Activity"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Activity"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Activity"> | Date | string
 }
@@ -587,9 +765,13 @@ export type ActivityCreateWithoutSessionsInput = {
   description?: string | null
   plannedSessionCount?: number
   isVolunteer?: boolean
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   project: Prisma.ProjectCreateNestedOneWithoutActivitiesInput
+  activityCenters?: Prisma.ActivityCenterCreateNestedManyWithoutActivityInput
 }
 
 export type ActivityUncheckedCreateWithoutSessionsInput = {
@@ -599,8 +781,12 @@ export type ActivityUncheckedCreateWithoutSessionsInput = {
   description?: string | null
   plannedSessionCount?: number
   isVolunteer?: boolean
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  activityCenters?: Prisma.ActivityCenterUncheckedCreateNestedManyWithoutActivityInput
 }
 
 export type ActivityCreateOrConnectWithoutSessionsInput = {
@@ -625,9 +811,13 @@ export type ActivityUpdateWithoutSessionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannedSessionCount?: Prisma.IntFieldUpdateOperationsInput | number
   isVolunteer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   project?: Prisma.ProjectUpdateOneRequiredWithoutActivitiesNestedInput
+  activityCenters?: Prisma.ActivityCenterUpdateManyWithoutActivityNestedInput
 }
 
 export type ActivityUncheckedUpdateWithoutSessionsInput = {
@@ -637,8 +827,12 @@ export type ActivityUncheckedUpdateWithoutSessionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannedSessionCount?: Prisma.IntFieldUpdateOperationsInput | number
   isVolunteer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activityCenters?: Prisma.ActivityCenterUncheckedUpdateManyWithoutActivityNestedInput
 }
 
 export type ActivityCreateManyProjectInput = {
@@ -647,6 +841,9 @@ export type ActivityCreateManyProjectInput = {
   description?: string | null
   plannedSessionCount?: number
   isVolunteer?: boolean
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -657,9 +854,13 @@ export type ActivityUpdateWithoutProjectInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannedSessionCount?: Prisma.IntFieldUpdateOperationsInput | number
   isVolunteer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutActivityNestedInput
+  activityCenters?: Prisma.ActivityCenterUpdateManyWithoutActivityNestedInput
 }
 
 export type ActivityUncheckedUpdateWithoutProjectInput = {
@@ -668,9 +869,13 @@ export type ActivityUncheckedUpdateWithoutProjectInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannedSessionCount?: Prisma.IntFieldUpdateOperationsInput | number
   isVolunteer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutActivityNestedInput
+  activityCenters?: Prisma.ActivityCenterUncheckedUpdateManyWithoutActivityNestedInput
 }
 
 export type ActivityUncheckedUpdateManyWithoutProjectInput = {
@@ -679,6 +884,9 @@ export type ActivityUncheckedUpdateManyWithoutProjectInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannedSessionCount?: Prisma.IntFieldUpdateOperationsInput | number
   isVolunteer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -690,10 +898,12 @@ export type ActivityUncheckedUpdateManyWithoutProjectInput = {
 
 export type ActivityCountOutputType = {
   sessions: number
+  activityCenters: number
 }
 
 export type ActivityCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | ActivityCountOutputTypeCountSessionsArgs
+  activityCenters?: boolean | ActivityCountOutputTypeCountActivityCentersArgs
 }
 
 /**
@@ -713,6 +923,13 @@ export type ActivityCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Typ
   where?: Prisma.SessionWhereInput
 }
 
+/**
+ * ActivityCountOutputType without action
+ */
+export type ActivityCountOutputTypeCountActivityCentersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ActivityCenterWhereInput
+}
+
 
 export type ActivitySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -721,10 +938,14 @@ export type ActivitySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   description?: boolean
   plannedSessionCount?: boolean
   isVolunteer?: boolean
+  startDate?: boolean
+  endDate?: boolean
+  archivedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   sessions?: boolean | Prisma.Activity$sessionsArgs<ExtArgs>
+  activityCenters?: boolean | Prisma.Activity$activityCentersArgs<ExtArgs>
   _count?: boolean | Prisma.ActivityCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["activity"]>
 
@@ -735,6 +956,9 @@ export type ActivitySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   description?: boolean
   plannedSessionCount?: boolean
   isVolunteer?: boolean
+  startDate?: boolean
+  endDate?: boolean
+  archivedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
@@ -747,6 +971,9 @@ export type ActivitySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   description?: boolean
   plannedSessionCount?: boolean
   isVolunteer?: boolean
+  startDate?: boolean
+  endDate?: boolean
+  archivedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
@@ -759,14 +986,18 @@ export type ActivitySelectScalar = {
   description?: boolean
   plannedSessionCount?: boolean
   isVolunteer?: boolean
+  startDate?: boolean
+  endDate?: boolean
+  archivedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ActivityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "projectId" | "title" | "description" | "plannedSessionCount" | "isVolunteer" | "createdAt" | "updatedAt", ExtArgs["result"]["activity"]>
+export type ActivityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "projectId" | "title" | "description" | "plannedSessionCount" | "isVolunteer" | "startDate" | "endDate" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["activity"]>
 export type ActivityInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   sessions?: boolean | Prisma.Activity$sessionsArgs<ExtArgs>
+  activityCenters?: boolean | Prisma.Activity$activityCentersArgs<ExtArgs>
   _count?: boolean | Prisma.ActivityCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ActivityIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -781,6 +1012,7 @@ export type $ActivityPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   objects: {
     project: Prisma.$ProjectPayload<ExtArgs>
     sessions: Prisma.$SessionPayload<ExtArgs>[]
+    activityCenters: Prisma.$ActivityCenterPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -789,6 +1021,9 @@ export type $ActivityPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     description: string | null
     plannedSessionCount: number
     isVolunteer: boolean
+    startDate: Date | null
+    endDate: Date | null
+    archivedAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["activity"]>
@@ -1187,6 +1422,7 @@ export interface Prisma__ActivityClient<T, Null = never, ExtArgs extends runtime
   readonly [Symbol.toStringTag]: "PrismaPromise"
   project<T extends Prisma.ProjectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProjectDefaultArgs<ExtArgs>>): Prisma.Prisma__ProjectClient<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   sessions<T extends Prisma.Activity$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Activity$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  activityCenters<T extends Prisma.Activity$activityCentersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Activity$activityCentersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActivityCenterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1222,6 +1458,9 @@ export interface ActivityFieldRefs {
   readonly description: Prisma.FieldRef<"Activity", 'String'>
   readonly plannedSessionCount: Prisma.FieldRef<"Activity", 'Int'>
   readonly isVolunteer: Prisma.FieldRef<"Activity", 'Boolean'>
+  readonly startDate: Prisma.FieldRef<"Activity", 'DateTime'>
+  readonly endDate: Prisma.FieldRef<"Activity", 'DateTime'>
+  readonly archivedAt: Prisma.FieldRef<"Activity", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Activity", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Activity", 'DateTime'>
 }
@@ -1646,6 +1885,30 @@ export type Activity$sessionsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
+}
+
+/**
+ * Activity.activityCenters
+ */
+export type Activity$activityCentersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ActivityCenter
+   */
+  select?: Prisma.ActivityCenterSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ActivityCenter
+   */
+  omit?: Prisma.ActivityCenterOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ActivityCenterInclude<ExtArgs> | null
+  where?: Prisma.ActivityCenterWhereInput
+  orderBy?: Prisma.ActivityCenterOrderByWithRelationInput | Prisma.ActivityCenterOrderByWithRelationInput[]
+  cursor?: Prisma.ActivityCenterWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ActivityCenterScalarFieldEnum | Prisma.ActivityCenterScalarFieldEnum[]
 }
 
 /**

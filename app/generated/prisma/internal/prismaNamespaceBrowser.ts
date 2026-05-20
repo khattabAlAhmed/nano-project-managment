@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Activity: 'Activity',
+  ActivityCenter: 'ActivityCenter',
   ApprovalRecord: 'ApprovalRecord',
   Center: 'Center',
   ProjectCenter: 'ProjectCenter',
@@ -84,11 +85,25 @@ export const ActivityScalarFieldEnum = {
   description: 'description',
   plannedSessionCount: 'plannedSessionCount',
   isVolunteer: 'isVolunteer',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  archivedAt: 'archivedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type ActivityScalarFieldEnum = (typeof ActivityScalarFieldEnum)[keyof typeof ActivityScalarFieldEnum]
+
+
+export const ActivityCenterScalarFieldEnum = {
+  id: 'id',
+  activityId: 'activityId',
+  centerId: 'centerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ActivityCenterScalarFieldEnum = (typeof ActivityCenterScalarFieldEnum)[keyof typeof ActivityCenterScalarFieldEnum]
 
 
 export const ApprovalRecordScalarFieldEnum = {

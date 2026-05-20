@@ -9,6 +9,7 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/Activity'
+export type * from './models/ActivityCenter'
 export type * from './models/ApprovalRecord'
 export type * from './models/Center'
 export type * from './models/ProjectCenter'

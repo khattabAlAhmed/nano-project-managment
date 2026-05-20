@@ -201,6 +201,7 @@ export type CenterWhereInput = {
   manager?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   projectCenters?: Prisma.ProjectCenterListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
+  activityCenters?: Prisma.ActivityCenterListRelationFilter
 }
 
 export type CenterOrderByWithRelationInput = {
@@ -214,6 +215,7 @@ export type CenterOrderByWithRelationInput = {
   manager?: Prisma.UserOrderByWithRelationInput
   projectCenters?: Prisma.ProjectCenterOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
+  activityCenters?: Prisma.ActivityCenterOrderByRelationAggregateInput
 }
 
 export type CenterWhereUniqueInput = Prisma.AtLeast<{
@@ -230,6 +232,7 @@ export type CenterWhereUniqueInput = Prisma.AtLeast<{
   manager?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   projectCenters?: Prisma.ProjectCenterListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
+  activityCenters?: Prisma.ActivityCenterListRelationFilter
 }, "id">
 
 export type CenterOrderByWithAggregationInput = {
@@ -268,6 +271,7 @@ export type CenterCreateInput = {
   manager?: Prisma.UserCreateNestedOneWithoutManagedCentersInput
   projectCenters?: Prisma.ProjectCenterCreateNestedManyWithoutCenterInput
   sessions?: Prisma.SessionCreateNestedManyWithoutCenterInput
+  activityCenters?: Prisma.ActivityCenterCreateNestedManyWithoutCenterInput
 }
 
 export type CenterUncheckedCreateInput = {
@@ -280,6 +284,7 @@ export type CenterUncheckedCreateInput = {
   archivedAt?: Date | string | null
   projectCenters?: Prisma.ProjectCenterUncheckedCreateNestedManyWithoutCenterInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutCenterInput
+  activityCenters?: Prisma.ActivityCenterUncheckedCreateNestedManyWithoutCenterInput
 }
 
 export type CenterUpdateInput = {
@@ -292,6 +297,7 @@ export type CenterUpdateInput = {
   manager?: Prisma.UserUpdateOneWithoutManagedCentersNestedInput
   projectCenters?: Prisma.ProjectCenterUpdateManyWithoutCenterNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutCenterNestedInput
+  activityCenters?: Prisma.ActivityCenterUpdateManyWithoutCenterNestedInput
 }
 
 export type CenterUncheckedUpdateInput = {
@@ -304,6 +310,7 @@ export type CenterUncheckedUpdateInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   projectCenters?: Prisma.ProjectCenterUncheckedUpdateManyWithoutCenterNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutCenterNestedInput
+  activityCenters?: Prisma.ActivityCenterUncheckedUpdateManyWithoutCenterNestedInput
 }
 
 export type CenterCreateManyInput = {
@@ -333,6 +340,11 @@ export type CenterUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type CenterScalarRelationFilter = {
+  is?: Prisma.CenterWhereInput
+  isNot?: Prisma.CenterWhereInput
 }
 
 export type CenterCountOrderByAggregateInput = {
@@ -365,11 +377,6 @@ export type CenterMinOrderByAggregateInput = {
   archivedAt?: Prisma.SortOrder
 }
 
-export type CenterScalarRelationFilter = {
-  is?: Prisma.CenterWhereInput
-  isNot?: Prisma.CenterWhereInput
-}
-
 export type CenterListRelationFilter = {
   every?: Prisma.CenterWhereInput
   some?: Prisma.CenterWhereInput
@@ -380,8 +387,18 @@ export type CenterOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
+export type CenterCreateNestedOneWithoutActivityCentersInput = {
+  create?: Prisma.XOR<Prisma.CenterCreateWithoutActivityCentersInput, Prisma.CenterUncheckedCreateWithoutActivityCentersInput>
+  connectOrCreate?: Prisma.CenterCreateOrConnectWithoutActivityCentersInput
+  connect?: Prisma.CenterWhereUniqueInput
+}
+
+export type CenterUpdateOneRequiredWithoutActivityCentersNestedInput = {
+  create?: Prisma.XOR<Prisma.CenterCreateWithoutActivityCentersInput, Prisma.CenterUncheckedCreateWithoutActivityCentersInput>
+  connectOrCreate?: Prisma.CenterCreateOrConnectWithoutActivityCentersInput
+  upsert?: Prisma.CenterUpsertWithoutActivityCentersInput
+  connect?: Prisma.CenterWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CenterUpdateToOneWithWhereWithoutActivityCentersInput, Prisma.CenterUpdateWithoutActivityCentersInput>, Prisma.CenterUncheckedUpdateWithoutActivityCentersInput>
 }
 
 export type CenterCreateNestedOneWithoutProjectCentersInput = {
@@ -454,6 +471,70 @@ export type CenterUncheckedUpdateManyWithoutManagerNestedInput = {
   deleteMany?: Prisma.CenterScalarWhereInput | Prisma.CenterScalarWhereInput[]
 }
 
+export type CenterCreateWithoutActivityCentersInput = {
+  id?: string
+  name: string
+  city: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  manager?: Prisma.UserCreateNestedOneWithoutManagedCentersInput
+  projectCenters?: Prisma.ProjectCenterCreateNestedManyWithoutCenterInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutCenterInput
+}
+
+export type CenterUncheckedCreateWithoutActivityCentersInput = {
+  id?: string
+  name: string
+  city: string
+  managerId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  projectCenters?: Prisma.ProjectCenterUncheckedCreateNestedManyWithoutCenterInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutCenterInput
+}
+
+export type CenterCreateOrConnectWithoutActivityCentersInput = {
+  where: Prisma.CenterWhereUniqueInput
+  create: Prisma.XOR<Prisma.CenterCreateWithoutActivityCentersInput, Prisma.CenterUncheckedCreateWithoutActivityCentersInput>
+}
+
+export type CenterUpsertWithoutActivityCentersInput = {
+  update: Prisma.XOR<Prisma.CenterUpdateWithoutActivityCentersInput, Prisma.CenterUncheckedUpdateWithoutActivityCentersInput>
+  create: Prisma.XOR<Prisma.CenterCreateWithoutActivityCentersInput, Prisma.CenterUncheckedCreateWithoutActivityCentersInput>
+  where?: Prisma.CenterWhereInput
+}
+
+export type CenterUpdateToOneWithWhereWithoutActivityCentersInput = {
+  where?: Prisma.CenterWhereInput
+  data: Prisma.XOR<Prisma.CenterUpdateWithoutActivityCentersInput, Prisma.CenterUncheckedUpdateWithoutActivityCentersInput>
+}
+
+export type CenterUpdateWithoutActivityCentersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  manager?: Prisma.UserUpdateOneWithoutManagedCentersNestedInput
+  projectCenters?: Prisma.ProjectCenterUpdateManyWithoutCenterNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutCenterNestedInput
+}
+
+export type CenterUncheckedUpdateWithoutActivityCentersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  projectCenters?: Prisma.ProjectCenterUncheckedUpdateManyWithoutCenterNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutCenterNestedInput
+}
+
 export type CenterCreateWithoutProjectCentersInput = {
   id?: string
   name: string
@@ -463,6 +544,7 @@ export type CenterCreateWithoutProjectCentersInput = {
   archivedAt?: Date | string | null
   manager?: Prisma.UserCreateNestedOneWithoutManagedCentersInput
   sessions?: Prisma.SessionCreateNestedManyWithoutCenterInput
+  activityCenters?: Prisma.ActivityCenterCreateNestedManyWithoutCenterInput
 }
 
 export type CenterUncheckedCreateWithoutProjectCentersInput = {
@@ -474,6 +556,7 @@ export type CenterUncheckedCreateWithoutProjectCentersInput = {
   updatedAt?: Date | string
   archivedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutCenterInput
+  activityCenters?: Prisma.ActivityCenterUncheckedCreateNestedManyWithoutCenterInput
 }
 
 export type CenterCreateOrConnectWithoutProjectCentersInput = {
@@ -501,6 +584,7 @@ export type CenterUpdateWithoutProjectCentersInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   manager?: Prisma.UserUpdateOneWithoutManagedCentersNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutCenterNestedInput
+  activityCenters?: Prisma.ActivityCenterUpdateManyWithoutCenterNestedInput
 }
 
 export type CenterUncheckedUpdateWithoutProjectCentersInput = {
@@ -512,6 +596,7 @@ export type CenterUncheckedUpdateWithoutProjectCentersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutCenterNestedInput
+  activityCenters?: Prisma.ActivityCenterUncheckedUpdateManyWithoutCenterNestedInput
 }
 
 export type CenterCreateWithoutSessionsInput = {
@@ -523,6 +608,7 @@ export type CenterCreateWithoutSessionsInput = {
   archivedAt?: Date | string | null
   manager?: Prisma.UserCreateNestedOneWithoutManagedCentersInput
   projectCenters?: Prisma.ProjectCenterCreateNestedManyWithoutCenterInput
+  activityCenters?: Prisma.ActivityCenterCreateNestedManyWithoutCenterInput
 }
 
 export type CenterUncheckedCreateWithoutSessionsInput = {
@@ -534,6 +620,7 @@ export type CenterUncheckedCreateWithoutSessionsInput = {
   updatedAt?: Date | string
   archivedAt?: Date | string | null
   projectCenters?: Prisma.ProjectCenterUncheckedCreateNestedManyWithoutCenterInput
+  activityCenters?: Prisma.ActivityCenterUncheckedCreateNestedManyWithoutCenterInput
 }
 
 export type CenterCreateOrConnectWithoutSessionsInput = {
@@ -561,6 +648,7 @@ export type CenterUpdateWithoutSessionsInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   manager?: Prisma.UserUpdateOneWithoutManagedCentersNestedInput
   projectCenters?: Prisma.ProjectCenterUpdateManyWithoutCenterNestedInput
+  activityCenters?: Prisma.ActivityCenterUpdateManyWithoutCenterNestedInput
 }
 
 export type CenterUncheckedUpdateWithoutSessionsInput = {
@@ -572,6 +660,7 @@ export type CenterUncheckedUpdateWithoutSessionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   projectCenters?: Prisma.ProjectCenterUncheckedUpdateManyWithoutCenterNestedInput
+  activityCenters?: Prisma.ActivityCenterUncheckedUpdateManyWithoutCenterNestedInput
 }
 
 export type CenterCreateWithoutManagerInput = {
@@ -583,6 +672,7 @@ export type CenterCreateWithoutManagerInput = {
   archivedAt?: Date | string | null
   projectCenters?: Prisma.ProjectCenterCreateNestedManyWithoutCenterInput
   sessions?: Prisma.SessionCreateNestedManyWithoutCenterInput
+  activityCenters?: Prisma.ActivityCenterCreateNestedManyWithoutCenterInput
 }
 
 export type CenterUncheckedCreateWithoutManagerInput = {
@@ -594,6 +684,7 @@ export type CenterUncheckedCreateWithoutManagerInput = {
   archivedAt?: Date | string | null
   projectCenters?: Prisma.ProjectCenterUncheckedCreateNestedManyWithoutCenterInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutCenterInput
+  activityCenters?: Prisma.ActivityCenterUncheckedCreateNestedManyWithoutCenterInput
 }
 
 export type CenterCreateOrConnectWithoutManagerInput = {
@@ -653,6 +744,7 @@ export type CenterUpdateWithoutManagerInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   projectCenters?: Prisma.ProjectCenterUpdateManyWithoutCenterNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutCenterNestedInput
+  activityCenters?: Prisma.ActivityCenterUpdateManyWithoutCenterNestedInput
 }
 
 export type CenterUncheckedUpdateWithoutManagerInput = {
@@ -664,6 +756,7 @@ export type CenterUncheckedUpdateWithoutManagerInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   projectCenters?: Prisma.ProjectCenterUncheckedUpdateManyWithoutCenterNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutCenterNestedInput
+  activityCenters?: Prisma.ActivityCenterUncheckedUpdateManyWithoutCenterNestedInput
 }
 
 export type CenterUncheckedUpdateManyWithoutManagerInput = {
@@ -683,11 +776,13 @@ export type CenterUncheckedUpdateManyWithoutManagerInput = {
 export type CenterCountOutputType = {
   projectCenters: number
   sessions: number
+  activityCenters: number
 }
 
 export type CenterCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   projectCenters?: boolean | CenterCountOutputTypeCountProjectCentersArgs
   sessions?: boolean | CenterCountOutputTypeCountSessionsArgs
+  activityCenters?: boolean | CenterCountOutputTypeCountActivityCentersArgs
 }
 
 /**
@@ -714,6 +809,13 @@ export type CenterCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types
   where?: Prisma.SessionWhereInput
 }
 
+/**
+ * CenterCountOutputType without action
+ */
+export type CenterCountOutputTypeCountActivityCentersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ActivityCenterWhereInput
+}
+
 
 export type CenterSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -726,6 +828,7 @@ export type CenterSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   manager?: boolean | Prisma.Center$managerArgs<ExtArgs>
   projectCenters?: boolean | Prisma.Center$projectCentersArgs<ExtArgs>
   sessions?: boolean | Prisma.Center$sessionsArgs<ExtArgs>
+  activityCenters?: boolean | Prisma.Center$activityCentersArgs<ExtArgs>
   _count?: boolean | Prisma.CenterCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["center"]>
 
@@ -766,6 +869,7 @@ export type CenterInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   manager?: boolean | Prisma.Center$managerArgs<ExtArgs>
   projectCenters?: boolean | Prisma.Center$projectCentersArgs<ExtArgs>
   sessions?: boolean | Prisma.Center$sessionsArgs<ExtArgs>
+  activityCenters?: boolean | Prisma.Center$activityCentersArgs<ExtArgs>
   _count?: boolean | Prisma.CenterCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CenterIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -781,6 +885,7 @@ export type $CenterPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     manager: Prisma.$UserPayload<ExtArgs> | null
     projectCenters: Prisma.$ProjectCenterPayload<ExtArgs>[]
     sessions: Prisma.$SessionPayload<ExtArgs>[]
+    activityCenters: Prisma.$ActivityCenterPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1187,6 +1292,7 @@ export interface Prisma__CenterClient<T, Null = never, ExtArgs extends runtime.T
   manager<T extends Prisma.Center$managerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Center$managerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   projectCenters<T extends Prisma.Center$projectCentersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Center$projectCentersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectCenterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.Center$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Center$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  activityCenters<T extends Prisma.Center$activityCentersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Center$activityCentersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActivityCenterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1688,6 +1794,30 @@ export type Center$sessionsArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
+}
+
+/**
+ * Center.activityCenters
+ */
+export type Center$activityCentersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ActivityCenter
+   */
+  select?: Prisma.ActivityCenterSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ActivityCenter
+   */
+  omit?: Prisma.ActivityCenterOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ActivityCenterInclude<ExtArgs> | null
+  where?: Prisma.ActivityCenterWhereInput
+  orderBy?: Prisma.ActivityCenterOrderByWithRelationInput | Prisma.ActivityCenterOrderByWithRelationInput[]
+  cursor?: Prisma.ActivityCenterWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ActivityCenterScalarFieldEnum | Prisma.ActivityCenterScalarFieldEnum[]
 }
 
 /**

@@ -23,6 +23,11 @@ export * from './enums';
  */
 export type Activity = Prisma.ActivityModel
 /**
+ * Model ActivityCenter
+ * 
+ */
+export type ActivityCenter = Prisma.ActivityCenterModel
+/**
  * Model ApprovalRecord
  * 
  */

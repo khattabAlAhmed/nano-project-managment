@@ -13,6 +13,8 @@ model Center {
   manager        User?           @relation("CenterManager", fields: [managerId], references: [id])
   projectCenters ProjectCenter[]
   sessions       Session[]
+  activityCenters ActivityCenter[]
+
 
   @@index([managerId])
   @@index([city])
