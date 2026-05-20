@@ -31,6 +31,7 @@ export type CenterMinAggregateOutputType = {
   managerId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  archivedAt: Date | null
 }
 
 export type CenterMaxAggregateOutputType = {
@@ -40,6 +41,7 @@ export type CenterMaxAggregateOutputType = {
   managerId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  archivedAt: Date | null
 }
 
 export type CenterCountAggregateOutputType = {
@@ -49,6 +51,7 @@ export type CenterCountAggregateOutputType = {
   managerId: number
   createdAt: number
   updatedAt: number
+  archivedAt: number
   _all: number
 }
 
@@ -60,6 +63,7 @@ export type CenterMinAggregateInputType = {
   managerId?: true
   createdAt?: true
   updatedAt?: true
+  archivedAt?: true
 }
 
 export type CenterMaxAggregateInputType = {
@@ -69,6 +73,7 @@ export type CenterMaxAggregateInputType = {
   managerId?: true
   createdAt?: true
   updatedAt?: true
+  archivedAt?: true
 }
 
 export type CenterCountAggregateInputType = {
@@ -78,6 +83,7 @@ export type CenterCountAggregateInputType = {
   managerId?: true
   createdAt?: true
   updatedAt?: true
+  archivedAt?: true
   _all?: true
 }
 
@@ -160,6 +166,7 @@ export type CenterGroupByOutputType = {
   managerId: string | null
   createdAt: Date
   updatedAt: Date
+  archivedAt: Date | null
   _count: CenterCountAggregateOutputType | null
   _min: CenterMinAggregateOutputType | null
   _max: CenterMaxAggregateOutputType | null
@@ -190,6 +197,7 @@ export type CenterWhereInput = {
   managerId?: Prisma.StringNullableFilter<"Center"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Center"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Center"> | Date | string
+  archivedAt?: Prisma.DateTimeNullableFilter<"Center"> | Date | string | null
   manager?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   projectCenters?: Prisma.ProjectCenterListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
@@ -202,6 +210,7 @@ export type CenterOrderByWithRelationInput = {
   managerId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   manager?: Prisma.UserOrderByWithRelationInput
   projectCenters?: Prisma.ProjectCenterOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
@@ -217,6 +226,7 @@ export type CenterWhereUniqueInput = Prisma.AtLeast<{
   managerId?: Prisma.StringNullableFilter<"Center"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Center"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Center"> | Date | string
+  archivedAt?: Prisma.DateTimeNullableFilter<"Center"> | Date | string | null
   manager?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   projectCenters?: Prisma.ProjectCenterListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
@@ -229,6 +239,7 @@ export type CenterOrderByWithAggregationInput = {
   managerId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CenterCountOrderByAggregateInput
   _max?: Prisma.CenterMaxOrderByAggregateInput
   _min?: Prisma.CenterMinOrderByAggregateInput
@@ -244,6 +255,7 @@ export type CenterScalarWhereWithAggregatesInput = {
   managerId?: Prisma.StringNullableWithAggregatesFilter<"Center"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Center"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Center"> | Date | string
+  archivedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Center"> | Date | string | null
 }
 
 export type CenterCreateInput = {
@@ -252,6 +264,7 @@ export type CenterCreateInput = {
   city: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  archivedAt?: Date | string | null
   manager?: Prisma.UserCreateNestedOneWithoutManagedCentersInput
   projectCenters?: Prisma.ProjectCenterCreateNestedManyWithoutCenterInput
   sessions?: Prisma.SessionCreateNestedManyWithoutCenterInput
@@ -264,6 +277,7 @@ export type CenterUncheckedCreateInput = {
   managerId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  archivedAt?: Date | string | null
   projectCenters?: Prisma.ProjectCenterUncheckedCreateNestedManyWithoutCenterInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutCenterInput
 }
@@ -274,6 +288,7 @@ export type CenterUpdateInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   manager?: Prisma.UserUpdateOneWithoutManagedCentersNestedInput
   projectCenters?: Prisma.ProjectCenterUpdateManyWithoutCenterNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutCenterNestedInput
@@ -286,6 +301,7 @@ export type CenterUncheckedUpdateInput = {
   managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   projectCenters?: Prisma.ProjectCenterUncheckedUpdateManyWithoutCenterNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutCenterNestedInput
 }
@@ -297,6 +313,7 @@ export type CenterCreateManyInput = {
   managerId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  archivedAt?: Date | string | null
 }
 
 export type CenterUpdateManyMutationInput = {
@@ -305,6 +322,7 @@ export type CenterUpdateManyMutationInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CenterUncheckedUpdateManyInput = {
@@ -314,6 +332,7 @@ export type CenterUncheckedUpdateManyInput = {
   managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CenterCountOrderByAggregateInput = {
@@ -323,6 +342,7 @@ export type CenterCountOrderByAggregateInput = {
   managerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  archivedAt?: Prisma.SortOrder
 }
 
 export type CenterMaxOrderByAggregateInput = {
@@ -332,6 +352,7 @@ export type CenterMaxOrderByAggregateInput = {
   managerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  archivedAt?: Prisma.SortOrder
 }
 
 export type CenterMinOrderByAggregateInput = {
@@ -341,6 +362,7 @@ export type CenterMinOrderByAggregateInput = {
   managerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  archivedAt?: Prisma.SortOrder
 }
 
 export type CenterScalarRelationFilter = {
@@ -356,6 +378,10 @@ export type CenterListRelationFilter = {
 
 export type CenterOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type CenterCreateNestedOneWithoutProjectCentersInput = {
@@ -434,6 +460,7 @@ export type CenterCreateWithoutProjectCentersInput = {
   city: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  archivedAt?: Date | string | null
   manager?: Prisma.UserCreateNestedOneWithoutManagedCentersInput
   sessions?: Prisma.SessionCreateNestedManyWithoutCenterInput
 }
@@ -445,6 +472,7 @@ export type CenterUncheckedCreateWithoutProjectCentersInput = {
   managerId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  archivedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutCenterInput
 }
 
@@ -470,6 +498,7 @@ export type CenterUpdateWithoutProjectCentersInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   manager?: Prisma.UserUpdateOneWithoutManagedCentersNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutCenterNestedInput
 }
@@ -481,6 +510,7 @@ export type CenterUncheckedUpdateWithoutProjectCentersInput = {
   managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutCenterNestedInput
 }
 
@@ -490,6 +520,7 @@ export type CenterCreateWithoutSessionsInput = {
   city: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  archivedAt?: Date | string | null
   manager?: Prisma.UserCreateNestedOneWithoutManagedCentersInput
   projectCenters?: Prisma.ProjectCenterCreateNestedManyWithoutCenterInput
 }
@@ -501,6 +532,7 @@ export type CenterUncheckedCreateWithoutSessionsInput = {
   managerId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  archivedAt?: Date | string | null
   projectCenters?: Prisma.ProjectCenterUncheckedCreateNestedManyWithoutCenterInput
 }
 
@@ -526,6 +558,7 @@ export type CenterUpdateWithoutSessionsInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   manager?: Prisma.UserUpdateOneWithoutManagedCentersNestedInput
   projectCenters?: Prisma.ProjectCenterUpdateManyWithoutCenterNestedInput
 }
@@ -537,6 +570,7 @@ export type CenterUncheckedUpdateWithoutSessionsInput = {
   managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   projectCenters?: Prisma.ProjectCenterUncheckedUpdateManyWithoutCenterNestedInput
 }
 
@@ -546,6 +580,7 @@ export type CenterCreateWithoutManagerInput = {
   city: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  archivedAt?: Date | string | null
   projectCenters?: Prisma.ProjectCenterCreateNestedManyWithoutCenterInput
   sessions?: Prisma.SessionCreateNestedManyWithoutCenterInput
 }
@@ -556,6 +591,7 @@ export type CenterUncheckedCreateWithoutManagerInput = {
   city: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  archivedAt?: Date | string | null
   projectCenters?: Prisma.ProjectCenterUncheckedCreateNestedManyWithoutCenterInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutCenterInput
 }
@@ -596,6 +632,7 @@ export type CenterScalarWhereInput = {
   managerId?: Prisma.StringNullableFilter<"Center"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Center"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Center"> | Date | string
+  archivedAt?: Prisma.DateTimeNullableFilter<"Center"> | Date | string | null
 }
 
 export type CenterCreateManyManagerInput = {
@@ -604,6 +641,7 @@ export type CenterCreateManyManagerInput = {
   city: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  archivedAt?: Date | string | null
 }
 
 export type CenterUpdateWithoutManagerInput = {
@@ -612,6 +650,7 @@ export type CenterUpdateWithoutManagerInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   projectCenters?: Prisma.ProjectCenterUpdateManyWithoutCenterNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutCenterNestedInput
 }
@@ -622,6 +661,7 @@ export type CenterUncheckedUpdateWithoutManagerInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   projectCenters?: Prisma.ProjectCenterUncheckedUpdateManyWithoutCenterNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutCenterNestedInput
 }
@@ -632,6 +672,7 @@ export type CenterUncheckedUpdateManyWithoutManagerInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -681,6 +722,7 @@ export type CenterSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   managerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  archivedAt?: boolean
   manager?: boolean | Prisma.Center$managerArgs<ExtArgs>
   projectCenters?: boolean | Prisma.Center$projectCentersArgs<ExtArgs>
   sessions?: boolean | Prisma.Center$sessionsArgs<ExtArgs>
@@ -694,6 +736,7 @@ export type CenterSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   managerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  archivedAt?: boolean
   manager?: boolean | Prisma.Center$managerArgs<ExtArgs>
 }, ExtArgs["result"]["center"]>
 
@@ -704,6 +747,7 @@ export type CenterSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   managerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  archivedAt?: boolean
   manager?: boolean | Prisma.Center$managerArgs<ExtArgs>
 }, ExtArgs["result"]["center"]>
 
@@ -714,9 +758,10 @@ export type CenterSelectScalar = {
   managerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  archivedAt?: boolean
 }
 
-export type CenterOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "city" | "managerId" | "createdAt" | "updatedAt", ExtArgs["result"]["center"]>
+export type CenterOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "city" | "managerId" | "createdAt" | "updatedAt" | "archivedAt", ExtArgs["result"]["center"]>
 export type CenterInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   manager?: boolean | Prisma.Center$managerArgs<ExtArgs>
   projectCenters?: boolean | Prisma.Center$projectCentersArgs<ExtArgs>
@@ -744,6 +789,7 @@ export type $CenterPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     managerId: string | null
     createdAt: Date
     updatedAt: Date
+    archivedAt: Date | null
   }, ExtArgs["result"]["center"]>
   composites: {}
 }
@@ -1176,6 +1222,7 @@ export interface CenterFieldRefs {
   readonly managerId: Prisma.FieldRef<"Center", 'String'>
   readonly createdAt: Prisma.FieldRef<"Center", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Center", 'DateTime'>
+  readonly archivedAt: Prisma.FieldRef<"Center", 'DateTime'>
 }
     
 

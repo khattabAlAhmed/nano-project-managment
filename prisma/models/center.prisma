@@ -5,8 +5,9 @@ model Center {
   name      String
   city      String
   managerId String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
 
   // Relations
   manager        User?           @relation("CenterManager", fields: [managerId], references: [id])

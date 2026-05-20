@@ -387,10 +387,6 @@ export type EnumNotificationTypeFieldUpdateOperationsInput = {
   set?: $Enums.NotificationType
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type NotificationCreateNestedManyWithoutProjectInput = {
   create?: Prisma.XOR<Prisma.NotificationCreateWithoutProjectInput, Prisma.NotificationUncheckedCreateWithoutProjectInput> | Prisma.NotificationCreateWithoutProjectInput[] | Prisma.NotificationUncheckedCreateWithoutProjectInput[]
   connectOrCreate?: Prisma.NotificationCreateOrConnectWithoutProjectInput | Prisma.NotificationCreateOrConnectWithoutProjectInput[]
