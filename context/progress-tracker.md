@@ -8,7 +8,7 @@ Update this file after every meaningful implementation change.
 
 ## Current Goal
 
-- Feature 13: Gantt Timeline View — ✅ Completed
+- Feature 14: Center Manager Workspace — ✅ Completed
 
 ## Completed
 
@@ -138,7 +138,13 @@ Update this file after every meaningful implementation change.
   - [x] Build summary cards (activities, sessions, completed, delayed)
   - [x] Build click-to-preview detail dialog with status badges, lock state, notes, documentation link
   - [x] Build mobile fallback simplified list mode
-  - [x] Build status legend with design token colors
+  - [x] Verify production build passes with 0 TypeScript/Lint compilation errors
+
+- Feature 14: Center Manager Workspace
+  - [x] Create center dashboard service (`services/center-dashboard/center-dashboard.service.ts`) with custom generated Prisma enum mappings
+  - [x] Create secure center dashboard API route (`app/api/center/dashboard/route.ts`)
+  - [x] Create premium, responsive Center Manager Workspace component (`components/dashboard/center-manager-workspace.tsx`) with search, status/approval dropdowns, and overdue/weekly filters
+  - [x] Integrate workspace conditionally on `/dashboard` landing page (`app/(app)/dashboard/page.tsx`) based on Clerk roles
   - [x] Verify production build passes with 0 TypeScript/Lint compilation errors
 
 ## In Progress
@@ -168,6 +174,7 @@ Update this file after every meaningful implementation change.
 - Feature 11: Enabled manual schedule overrides for project managers by adding trackable parameters to the Session model (`isLocked`, `isManuallyAdjusted`, `manualAdjustmentReason`). Created secure, fully-validated backend API handlers and a dense front-end grid workspace complete with live, informational warnings (consecutive date proximity and allocation imbalance).
 - Feature 12: Implemented a high-performance aggregated Dashboard Query Service (`services/dashboard/`) leveraging parallel Prisma queries via `Promise.all` and single-pass traversals. Exposed these aggregates through a project-scoped `GET` route, and replaced the mock landing dashboard with a complete, operational grid environment displaying core progress, volunteer scopes, overdue delays, center matrix tables, and unified recent activity logs.
 - Feature 13: Built the operational Gantt Timeline View using `frappe-gantt` as the rendering engine, wrapped in a custom React component with SSR-safe dynamic imports. Created a dedicated timeline data service (`services/timeline/`) with activity-grouped and center-grouped task aggregation. Styled all Gantt bars using design token CSS variables mapped to session statuses (pending, completed, delayed, approved, rejected). Implemented a full toolbar with Activity/Session view switching, Activity/Center grouping, and Week/Month/Quarter zoom controls. Added click-to-preview detail dialog, summary metric cards, status legend, and mobile-responsive fallback list view.
+- Feature 14: Created modular, center-scoped `services/center-dashboard/` query helper service mapping target manager ids. Exposed secure authenticated API route under `GET /api/center/dashboard`. Built premium custom operational dashboard component featuring: multi-metric grids, progress summaries, action queues (awaiting docs, revisions, executions) and full client-side search datatables. Conditional redirection mapped inside top-level dashboard layout using Clerk metadata profiles.
 
 
 

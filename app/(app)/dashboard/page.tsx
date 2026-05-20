@@ -39,6 +39,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
+import { CenterManagerWorkspace } from "@/components/dashboard/center-manager-workspace";
 
 // Interface definitions matching backend
 interface DashboardOverview {
@@ -208,6 +209,15 @@ export default function DashboardPage() {
       <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
         <Loader2 className="size-8 animate-spin text-primary" />
         <p className="text-sm text-text-muted">Loading projects...</p>
+      </div>
+    );
+  }
+
+  // 1.5. Dedicated workspace for Center Managers
+  if (role === "CENTER_MANAGER") {
+    return (
+      <div className="layout-section">
+        <CenterManagerWorkspace userId={user?.id || ""} />
       </div>
     );
   }
