@@ -1,5 +1,62 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { Role, isValidRole, roleHasPermission, type Permission } from "@/types/roles";
+import { prisma } from "@/lib/prisma";
+
+/**
+ * Get or create the database User corresponding to the current authenticated Clerk user.
+ * Keeps the database user record (email and role) synchronized with Clerk metadata.
+ */
+export async function getOrCreateDbUser() {
+  const clerkUser = await currentUser();
+  if (!clerkUser) {
+    return null;
+  }
+
+  const clerkUserId = clerkUser.id;
+  const email = clerkUser.emailAddresses[0]?.emailAddress ?? "";
+  const role = extractRole(clerkUser.publicMetadata as Record<string, unknown>);
+
+  // Find in DB by clerkUserId first
+  let dbUser = await prisma.user.findUnique({
+    where: { clerkUserId },
+  });
+
+  // Fallback to finding by email to support recreated Clerk accounts using the same email address
+  if (!dbUser && email) {
+    dbUser = await prisma.user.findUnique({
+      where: { email },
+    });
+    if (dbUser) {
+      // Link the existing database record to the new clerkUserId and synchronize the role
+      dbUser = await prisma.user.update({
+        where: { id: dbUser.id },
+        data: { clerkUserId, role },
+      });
+    }
+  }
+
+  if (!dbUser) {
+    dbUser = await prisma.user.create({
+      data: {
+        clerkUserId,
+        email,
+        role,
+      },
+    });
+  } else if (dbUser.email !== email || dbUser.role !== role) {
+    // Synchronize updates from Clerk
+    dbUser = await prisma.user.update({
+      where: { clerkUserId },
+      data: {
+        email,
+        role,
+      },
+    });
+  }
+
+  return dbUser;
+}
+
 
 /**
  * Authenticated user shape returned by auth helpers.

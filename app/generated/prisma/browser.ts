@@ -17,4 +17,43 @@ import * as Prisma from './internal/prismaNamespaceBrowser'
 export { Prisma }
 export * as $Enums from './enums'
 export * from './enums';
-
+/**
+ * Model Activity
+ * 
+ */
+export type Activity = Prisma.ActivityModel
+/**
+ * Model ApprovalRecord
+ * 
+ */
+export type ApprovalRecord = Prisma.ApprovalRecordModel
+/**
+ * Model Center
+ * 
+ */
+export type Center = Prisma.CenterModel
+/**
+ * Model ProjectCenter
+ * 
+ */
+export type ProjectCenter = Prisma.ProjectCenterModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel
+/**
+ * Model Project
+ * 
+ */
+export type Project = Prisma.ProjectModel
+/**
+ * Model Session
+ * 
+ */
+export type Session = Prisma.SessionModel
+/**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel
