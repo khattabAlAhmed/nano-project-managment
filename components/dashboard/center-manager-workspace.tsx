@@ -36,6 +36,7 @@ import type {
   CenterSessionData,
   CenterActionItem,
 } from "@/services/center-dashboard/center-dashboard.service";
+import { SessionExecutionDialog } from "@/components/sessions/session-execution-dialog";
 
 interface CenterManagerWorkspaceProps {
   userId: string;
@@ -50,6 +51,38 @@ export function CenterManagerWorkspace({ userId }: CenterManagerWorkspaceProps) 
   const [statusFilter, setStatusFilter] = React.useState("ALL");
   const [approvalFilter, setApprovalFilter] = React.useState("ALL");
   const [dateFilter, setDateFilter] = React.useState("ALL");
+
+  // Execution modal states
+  const [selectedSessionId, setSelectedSessionId] = React.useState<string | null>(null);
+  const [isExecuteOpen, setIsExecuteOpen] = React.useState<boolean>(false);
+
+  const selectedSession = React.useMemo(() => {
+    if (!data || !selectedSessionId) return null;
+    const s = data.sessions.find((x) => x.id === selectedSessionId);
+    if (!s) return null;
+    return {
+      id: s.id,
+      activityTitle: s.activityTitle,
+      centerName: s.centerName,
+      status: s.status,
+      approvalStatus: s.approvalStatus,
+      documentationUrl: s.documentationUrl,
+      notes: s.notes,
+      isLocked: s.isLocked,
+      scheduledDate: s.scheduledDate,
+      center: {
+        id: s.centerId,
+        name: s.centerName,
+        city: s.city,
+        managerId: userId,
+      },
+    };
+  }, [data, selectedSessionId, userId]);
+
+  const handleOpenExecute = (id: string) => {
+    setSelectedSessionId(id);
+    setIsExecuteOpen(true);
+  };
 
   const fetchDashboardData = React.useCallback(async () => {
     setLoading(true);
@@ -277,7 +310,11 @@ export function CenterManagerWorkspace({ userId }: CenterManagerWorkspaceProps) 
             ) : (
               <div className="space-y-3 max-h-[300px] overflow-y-auto pr-1 flex-1">
                 {actionQueue.map((item) => (
-                  <ActionQueueCard key={item.id} item={item} />
+                  <ActionQueueCard
+                    key={item.id}
+                    item={item}
+                    onClick={() => handleOpenExecute(item.id)}
+                  />
                 ))}
               </div>
             )}
@@ -379,6 +416,7 @@ export function CenterManagerWorkspace({ userId }: CenterManagerWorkspaceProps) 
                   <th className="py-2.5 px-4 font-semibold">Scheduled Date</th>
                   <th className="py-2.5 px-4 font-semibold text-center">Status</th>
                   <th className="py-2.5 px-4 font-semibold text-center">Approval State</th>
+                  <th className="py-2.5 px-4 font-semibold text-right pr-6">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/40">
@@ -402,6 +440,16 @@ export function CenterManagerWorkspace({ userId }: CenterManagerWorkspaceProps) 
                     <td className="py-3 px-4 text-center">
                       <ApprovalBadge status={session.approvalStatus} />
                     </td>
+                    <td className="py-3 px-4 text-right pr-6">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleOpenExecute(session.id)}
+                        className="text-xs h-7 text-primary hover:text-primary-hover font-semibold px-2.5"
+                      >
+                        Execute
+                      </Button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -409,6 +457,16 @@ export function CenterManagerWorkspace({ userId }: CenterManagerWorkspaceProps) 
           </div>
         )}
       </div>
+
+      {/* Session Execution Dialog Modal */}
+      <SessionExecutionDialog
+        session={selectedSession}
+        isOpen={isExecuteOpen}
+        onOpenChange={setIsExecuteOpen}
+        onSuccess={fetchDashboardData}
+        currentUserId={userId}
+        currentUserRole="CENTER_MANAGER"
+      />
     </div>
   );
 }
@@ -444,7 +502,13 @@ function OverviewCard({
   );
 }
 
-function ActionQueueCard({ item }: { item: CenterActionItem }) {
+function ActionQueueCard({
+  item,
+  onClick,
+}: {
+  item: CenterActionItem;
+  onClick?: () => void;
+}) {
   const config = {
     EXECUTION: {
       border: "border-status-pending/30 bg-status-pending/5",
@@ -469,7 +533,10 @@ function ActionQueueCard({ item }: { item: CenterActionItem }) {
   const c = config[item.type];
 
   return (
-    <div className={`p-3.5 border rounded-lg flex gap-3 ${c.border} leading-snug`}>
+    <div
+      onClick={onClick}
+      className={`p-3.5 border rounded-lg flex gap-3 ${c.border} leading-snug cursor-pointer transition-all hover:border-primary/40 hover:shadow-xs active:scale-[0.99]`}
+    >
       {c.icon}
       <div className="min-w-0 flex-1 space-y-1">
         <div className="flex items-center justify-between gap-2">

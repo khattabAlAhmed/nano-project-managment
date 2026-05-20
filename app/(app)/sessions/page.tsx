@@ -28,6 +28,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { EmptyState } from "@/components/empty-state";
+import { SessionExecutionDialog } from "@/components/sessions/session-execution-dialog";
 import {
   Table,
   TableBody,
@@ -55,6 +56,7 @@ interface Center {
   id: string;
   name: string;
   city: string;
+  managerId?: string | null;
 }
 
 interface ActivityCenterRelation {
@@ -104,6 +106,37 @@ export default function SessionsPage() {
   const [sessions, setSessions] = React.useState<SessionItem[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
+
+  // DB User fetching state
+  const [dbUser, setDbUser] = React.useState<DBUser | null>(null);
+
+  // Execution Modal States
+  const [isExecuteOpen, setIsExecuteOpen] = React.useState(false);
+  const [selectedExecuteSession, setSelectedExecuteSession] = React.useState<SessionItem | null>(null);
+
+  // Fetch dbUser to match center managers on physical centers
+  React.useEffect(() => {
+    async function fetchMe() {
+      if (!user) return;
+      try {
+        const res = await fetch("/api/users");
+        if (!res.ok) return;
+        const users = await res.json();
+        const me = users.find((u: any) => u.clerkUserId === user.id);
+        if (me) {
+          setDbUser(me);
+        }
+      } catch (err) {
+        console.error("Error loading db user in sessions page:", err);
+      }
+    }
+    fetchMe();
+  }, [user]);
+
+  function handleOpenExecute(session: SessionItem) {
+    setSelectedExecuteSession(session);
+    setIsExecuteOpen(true);
+  }
   
   // Advanced filters
   const [statusFilter, setStatusFilter] = React.useState<string>("all");
@@ -524,19 +557,37 @@ export default function SessionsPage() {
 
                   {/* Actions */}
                   <TableCell className="py-4 text-right pr-6">
-                    {canModify ? (
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleOpenEdit(session)}
-                        className="size-8 text-text-muted hover:text-text-primary hover:bg-muted"
-                        title="Adjust Schedule"
-                      >
-                        <Edit2 className="size-3.5" />
-                      </Button>
-                    ) : (
-                      <span className="text-xs text-text-muted italic">Read-only</span>
-                    )}
+                    <div className="flex justify-end gap-1.5 items-center">
+                      {/* Execute Button */}
+                      {(isProjectManager || (role === "CENTER_MANAGER" && dbUser && session.center?.managerId === dbUser.id)) ? (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleOpenExecute(session)}
+                          className="text-xs h-8 text-primary hover:text-primary-hover font-semibold px-2.5"
+                        >
+                          Execute
+                        </Button>
+                      ) : null}
+
+                      {/* Adjust Schedule (Project Manager only) */}
+                      {canModify && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleOpenEdit(session)}
+                          className="size-8 text-text-muted hover:text-text-primary hover:bg-muted"
+                          title="Adjust Schedule"
+                        >
+                          <Edit2 className="size-3.5" />
+                        </Button>
+                      )}
+
+                      {/* Read-only feedback fallback */}
+                      {!isProjectManager && !(role === "CENTER_MANAGER" && dbUser && session.center?.managerId === dbUser.id) && (
+                        <span className="text-xs text-text-muted italic">Read-only</span>
+                      )}
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -675,6 +726,19 @@ export default function SessionsPage() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* SESSION EXECUTION DIALOG */}
+      {selectedExecuteSession && (
+        <SessionExecutionDialog
+          session={selectedExecuteSession}
+          isOpen={isExecuteOpen}
+          onOpenChange={setIsExecuteOpen}
+          onSuccess={fetchSessions}
+          currentUserId={dbUser?.id}
+          currentUserRole={role}
+          isProjectArchived={isProjectArchived}
+        />
+      )}
     </div>
   );
 }

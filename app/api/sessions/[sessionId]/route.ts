@@ -198,6 +198,7 @@ export async function PATCH(
             id: true,
             name: true,
             city: true,
+            managerId: true,
           },
         },
       },

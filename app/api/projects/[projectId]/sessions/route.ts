@@ -52,6 +52,7 @@ export async function GET(
             id: true,
             name: true,
             city: true,
+            managerId: true,
           },
         },
       },
