@@ -44,6 +44,8 @@ export interface CenterPerformanceMetric {
   completedSessions: number;
   delayedSessions: number;
   completionPercentage: number;
+  volunteerAssignedCount: number;
+  volunteerCompletedCount: number;
 }
 
 export interface VolunteerActivitySummary {
@@ -189,10 +191,22 @@ export async function getProjectDashboardData(projectId: string): Promise<Dashbo
   let coreCompletedCount = 0;
 
   // Center metrics map
-  const centerMetricsMap = new Map<string, { assigned: number; completed: number; delayed: number }>();
+  const centerMetricsMap = new Map<string, {
+    assigned: number;
+    completed: number;
+    delayed: number;
+    volunteerAssigned: number;
+    volunteerCompleted: number;
+  }>();
   participatingCenters.forEach((pc) => {
     if (pc.center) {
-      centerMetricsMap.set(pc.center.id, { assigned: 0, completed: 0, delayed: 0 });
+      centerMetricsMap.set(pc.center.id, {
+        assigned: 0,
+        completed: 0,
+        delayed: 0,
+        volunteerAssigned: 0,
+        volunteerCompleted: 0,
+      });
     }
   });
 
@@ -238,10 +252,21 @@ export async function getProjectDashboardData(projectId: string): Promise<Dashbo
 
     // Center performance calculations
     if (s.centerId) {
-      const current = centerMetricsMap.get(s.centerId) || { assigned: 0, completed: 0, delayed: 0 };
-      current.assigned++;
-      if (isCompleted) current.completed++;
-      if (isSessionDelayed) current.delayed++;
+      const current = centerMetricsMap.get(s.centerId) || {
+        assigned: 0,
+        completed: 0,
+        delayed: 0,
+        volunteerAssigned: 0,
+        volunteerCompleted: 0,
+      };
+      if (isVol) {
+        current.volunteerAssigned++;
+        if (isCompleted) current.volunteerCompleted++;
+      } else {
+        current.assigned++;
+        if (isCompleted) current.completed++;
+        if (isSessionDelayed) current.delayed++;
+      }
       centerMetricsMap.set(s.centerId, current);
     }
   });
@@ -259,7 +284,13 @@ export async function getProjectDashboardData(projectId: string): Promise<Dashbo
   const centerPerformance: CenterPerformanceMetric[] = participatingCenters
     .filter((pc) => pc.center !== null)
     .map((pc) => {
-      const stats = centerMetricsMap.get(pc.center.id) || { assigned: 0, completed: 0, delayed: 0 };
+      const stats = centerMetricsMap.get(pc.center.id) || {
+        assigned: 0,
+        completed: 0,
+        delayed: 0,
+        volunteerAssigned: 0,
+        volunteerCompleted: 0,
+      };
       const percentage = stats.assigned > 0
         ? Math.round((stats.completed / stats.assigned) * 100)
         : 0;
@@ -272,6 +303,8 @@ export async function getProjectDashboardData(projectId: string): Promise<Dashbo
         completedSessions: stats.completed,
         delayedSessions: stats.delayed,
         completionPercentage: percentage,
+        volunteerAssignedCount: stats.volunteerAssigned,
+        volunteerCompletedCount: stats.volunteerCompleted,
       };
     });
 

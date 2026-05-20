@@ -86,6 +86,8 @@ interface CenterPerformanceMetric {
   completedSessions: number;
   delayedSessions: number;
   completionPercentage: number;
+  volunteerAssignedCount: number;
+  volunteerCompletedCount: number;
 }
 
 interface VolunteerActivitySummary {
@@ -783,38 +785,64 @@ export default function DashboardPage() {
                       <th className="py-2.5 px-4 font-semibold text-center">Assigned Sessions</th>
                       <th className="py-2.5 px-4 font-semibold text-center">Completed</th>
                       <th className="py-2.5 px-4 font-semibold text-center">Delayed / Overdue</th>
+                      <th className="py-2.5 px-4 font-semibold text-center">Volunteer Contribution</th>
                       <th className="py-2.5 px-4 font-semibold text-right pr-6">Completion Progress</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border/40">
-                    {dashboardData.centerPerformance.map((c) => (
-                      <tr key={c.centerId} className="hover:bg-muted/10 transition-colors">
-                        <td className="py-3 px-4 font-semibold text-text-primary">{c.centerName}</td>
-                        <td className="py-3 px-4 text-text-secondary">{c.city}</td>
-                        <td className="py-3 px-4 text-center font-medium text-text-primary">{c.assignedSessions}</td>
-                        <td className="py-3 px-4 text-center text-emerald-600 font-semibold">{c.completedSessions}</td>
-                        <td className="py-3 px-4 text-center text-rose-600 font-semibold">{c.delayedSessions}</td>
-                        <td className="py-3 px-4 text-right pr-6">
-                          <div className="flex items-center justify-end gap-3">
-                            <span className="font-semibold text-text-secondary">{c.completionPercentage}%</span>
-                            <div className="w-24 bg-muted rounded-full h-2 overflow-hidden inline-block shrink-0">
-                              <div
-                                className="bg-emerald-500 h-full rounded-full transition-all"
-                                style={{ width: `${c.completionPercentage}%` }}
-                              ></div>
+                    {dashboardData.centerPerformance.map((c) => {
+                      const volPercentage = c.volunteerAssignedCount > 0
+                        ? Math.round((c.volunteerCompletedCount / c.volunteerAssignedCount) * 100)
+                        : 0;
+                      return (
+                        <tr key={c.centerId} className="hover:bg-muted/10 transition-colors">
+                          <td className="py-3 px-4 font-semibold text-text-primary">{c.centerName}</td>
+                          <td className="py-3 px-4 text-text-secondary">{c.city}</td>
+                          <td className="py-3 px-4 text-center font-medium text-text-primary">{c.assignedSessions}</td>
+                          <td className="py-3 px-4 text-center text-emerald-600 font-semibold">{c.completedSessions}</td>
+                          <td className="py-3 px-4 text-center text-rose-600 font-semibold">{c.delayedSessions}</td>
+                          <td className="py-3 px-4 text-center">
+                            {c.volunteerAssignedCount > 0 ? (
+                              <div className="flex flex-col items-center justify-center gap-1">
+                                <span className="font-semibold text-purple-600 dark:text-purple-400 text-xs">
+                                  {c.volunteerCompletedCount} / {c.volunteerAssignedCount}
+                                </span>
+                                <div className="flex items-center gap-1.5">
+                                  <span className="text-[10px] font-medium text-text-muted">{volPercentage}%</span>
+                                  <div className="w-12 bg-muted rounded-full h-1 overflow-hidden inline-block shrink-0">
+                                    <div
+                                      className="bg-purple-500 h-full rounded-full transition-all"
+                                      style={{ width: `${volPercentage}%` }}
+                                    ></div>
+                                  </div>
+                                </div>
+                              </div>
+                            ) : (
+                              <span className="text-[10px] text-text-disabled italic">None</span>
+                            )}
+                          </td>
+                          <td className="py-3 px-4 text-right pr-6">
+                            <div className="flex items-center justify-end gap-3">
+                              <span className="font-semibold text-text-secondary">{c.completionPercentage}%</span>
+                              <div className="w-24 bg-muted rounded-full h-2 overflow-hidden inline-block shrink-0">
+                                <div
+                                  className="bg-emerald-500 h-full rounded-full transition-all"
+                                  style={{ width: `${c.completionPercentage}%` }}
+                                ></div>
+                              </div>
                             </div>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
             )}
           </div>
 
-          {/* Section 4: Metadata card */}
-          <div className="grid gap-6 md:grid-cols-3">
+          {/* Section 4: Metadata and Volunteer Cards */}
+          <div className="grid gap-6 md:grid-cols-4">
             
             {/* Metadata Card */}
             <div className="p-5 bg-card border border-border/80 rounded-xl shadow-xs flex flex-col gap-3">
@@ -838,6 +866,34 @@ export default function DashboardPage() {
                     {dashboardData.projectOverview.ownerEmail}
                   </span>
                 </div>
+              </div>
+            </div>
+
+            {/* Volunteer Summary Card */}
+            <div className="p-5 bg-card border border-border/80 rounded-xl shadow-xs flex flex-col gap-3">
+              <h2 className="text-xs font-semibold text-purple-600 dark:text-purple-400 uppercase tracking-wider flex items-center gap-1.5">
+                <Sparkles className="size-3.5" />
+                Volunteer Initiatives
+              </h2>
+              <div className="text-xs text-text-muted flex flex-col gap-1.5">
+                <div className="flex justify-between py-1 border-b border-border/40">
+                  <span className="font-medium">Total Assigned</span>
+                  <span className="font-semibold text-text-primary">{dashboardData.volunteerSummary.volunteerSessionsCount} sessions</span>
+                </div>
+                <div className="flex justify-between py-1 border-b border-border/40">
+                  <span className="font-medium">Completed</span>
+                  <span className="font-semibold text-purple-600 dark:text-purple-400">{dashboardData.volunteerSummary.volunteerCompletedCount} sessions</span>
+                </div>
+                <div className="flex justify-between py-1 border-b border-border/40">
+                  <span className="font-medium">Participation Rate</span>
+                  <span className="font-semibold text-text-primary">{dashboardData.volunteerSummary.volunteerCompletionPercentage}%</span>
+                </div>
+              </div>
+              <div className="w-full bg-muted rounded-full h-1.5 overflow-hidden mt-1">
+                <div
+                  className="bg-purple-500 h-full rounded-full transition-all duration-500"
+                  style={{ width: `${dashboardData.volunteerSummary.volunteerCompletionPercentage}%` }}
+                ></div>
               </div>
             </div>
 

@@ -161,11 +161,18 @@ Update this file after every meaningful implementation change.
   - [x] Build frontend Approvals Page UI with metrics ribbon, queue datatable with search and filters, and sidebar decisions feed
   - [x] Build interactive `ReviewDialog` with Drive links and validation error handling
   - [x] Verify production build compiles with 0 TypeScript/Lint compiler errors
-
+- Feature 17: Volunteer Activities
+  - [x] Create purple oklch variables and custom dashed Gantt styles for volunteer tasks in `globals.css` and `gantt-styles.css`
+  - [x] Extend `CenterPerformanceMetric` in project dashboard service to calculate and return volunteer completion metrics per center
+  - [x] Add volunteer completion rate and contribution metrics to PM dashboard branches performance matrix table
+  - [x] Add volunteer initiative filter selection to the Activities planning and Sessions registry views
+  - [x] Implement dynamic `type` query parameters in timeline API to isolate core and volunteer schedules in the Gantt timeline
+  - [x] Verify production build passes with 0 TypeScript/Lint compilation errors
 
 ## In Progress
 
 - None.
+
 
 ## Next Up
 
@@ -193,7 +200,6 @@ Update this file after every meaningful implementation change.
 - Feature 14: Created modular, center-scoped `services/center-dashboard/` query helper service mapping target manager ids. Exposed secure authenticated API route under `GET /api/center/dashboard`. Built premium custom operational dashboard component featuring: multi-metric grids, progress summaries, action queues (awaiting docs, revisions, executions) and full client-side search datatables. Conditional redirection mapped inside top-level dashboard layout using Clerk metadata profiles.
 - Feature 15: Implemented secure scheduled session execution handlers under `PATCH /api/sessions/[sessionId]/execute` checking assigned physical center manager scopes. Created shared `SessionExecutionDialog` component supporting full state adjustments, notes logs, Google Drive folder validation, and approval submissions. Integrated execution dialogues across dashboard queues, list metrics, and global registry grids with real-time UI synchronization.
 - Feature 16: Implemented dual-endpoint approvals workflow under `GET /api/projects/[projectId]/approvals` and `PATCH /api/sessions/[sessionId]/approval` with Project Manager validations, transactionally recording history in the `ApprovalRecord` model. Updated the project and center dashboard services to require explicit `APPROVED` state for completion metrics. Built premium approvals queue table workspace with overdue filters and sidebar audit history feeds.
-
-
+- Feature 17: Extended the design system with semantic oklch purple volunteer status tokens (`--status-volunteer`) across light and dark themes, plus dashed-stroke Gantt bar overlays in `gantt-styles.css`. Expanded `CenterPerformanceMetric` to aggregate `volunteerAssignedCount`/`volunteerCompletedCount` per center during single-pass traversal. Added a dedicated Volunteer Initiatives summary card and per-center contribution column to the PM dashboard. Integrated Core/Volunteer type filter dropdowns into the Sessions Registry and Gantt Timeline toolbar with server-side `type` query parameter support in the timeline API. All volunteer metrics are calculated separately from core completion percentages to preserve the progression invariant.
 
 

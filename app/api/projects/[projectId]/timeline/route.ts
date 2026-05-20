@@ -29,13 +29,17 @@ export async function GET(
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    // Parse groupBy query param
+    // Parse groupBy and type query params
     const url = new URL(request.url);
     const groupByParam = url.searchParams.get("groupBy");
     const groupBy: "activity" | "center" =
       groupByParam === "center" ? "center" : "activity";
 
-    const data = await getTimelineData(projectId, groupBy);
+    const typeParam = url.searchParams.get("type");
+    const type: "all" | "core" | "volunteer" =
+      typeParam === "volunteer" ? "volunteer" : typeParam === "core" ? "core" : "all";
+
+    const data = await getTimelineData(projectId, groupBy, type);
     return NextResponse.json(data);
   } catch (error: any) {
     console.error("GET /api/projects/[projectId]/timeline error:", error);

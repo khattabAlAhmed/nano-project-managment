@@ -71,6 +71,7 @@ interface ActivityItem {
   description: string | null;
   startDate: string | null;
   endDate: string | null;
+  isVolunteer: boolean;
   activityCenters: ActivityCenterRelation[];
 }
 
@@ -142,6 +143,7 @@ export default function SessionsPage() {
   const [statusFilter, setStatusFilter] = React.useState<string>("all");
   const [lockFilter, setLockFilter] = React.useState<"all" | "locked" | "unlocked">("all");
   const [adjustFilter, setAdjustFilter] = React.useState<"all" | "adjusted" | "generated">("all");
+  const [typeFilter, setTypeFilter] = React.useState<"all" | "core" | "volunteer">("all");
   const [sortOrder, setSortOrder] = React.useState<"asc" | "desc">("asc");
 
   // Edit Modal State
@@ -317,6 +319,10 @@ export default function SessionsPage() {
       if (adjustFilter === "adjusted" && !s.isManuallyAdjusted) return false;
       if (adjustFilter === "generated" && s.isManuallyAdjusted) return false;
 
+      // 5. Type Filter (Core / Volunteer)
+      if (typeFilter === "core" && s.activity?.isVolunteer) return false;
+      if (typeFilter === "volunteer" && !s.activity?.isVolunteer) return false;
+
       return true;
     });
 
@@ -328,7 +334,7 @@ export default function SessionsPage() {
     });
 
     return result;
-  }, [sessions, searchQuery, statusFilter, lockFilter, adjustFilter, sortOrder]);
+  }, [sessions, searchQuery, statusFilter, lockFilter, adjustFilter, typeFilter, sortOrder]);
 
   if (!activeProject) {
     return (
@@ -444,6 +450,17 @@ export default function SessionsPage() {
             <option value="adjusted">✍️ Manually Adjusted</option>
             <option value="generated">🤖 Auto-Generated</option>
           </select>
+
+          {/* Type filter (Core / Volunteer) */}
+          <select
+            value={typeFilter}
+            onChange={(e) => setTypeFilter(e.target.value as any)}
+            className="flex h-9 w-full sm:w-[160px] rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring dark:bg-zinc-950 dark:text-zinc-50"
+          >
+            <option value="all">All Types</option>
+            <option value="core">📋 Core Required</option>
+            <option value="volunteer">💜 Volunteer</option>
+          </select>
         </div>
 
         {/* Sorting order */}
@@ -495,10 +512,17 @@ export default function SessionsPage() {
                 <TableRow key={session.id}>
                   {/* Workshop/Activity Title */}
                   <TableCell className="py-4 font-medium pl-6">
-                    <div className="space-y-0.5">
-                      <span className="text-sm font-semibold text-text-primary block">
-                        {session.activity?.title || "Unknown Activity"}
-                      </span>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-sm font-semibold text-text-primary">
+                          {session.activity?.title || "Unknown Activity"}
+                        </span>
+                        {session.activity?.isVolunteer && (
+                          <Badge variant="outline" className="border-purple-400/50 text-purple-600 dark:text-purple-400 bg-purple-500/5 text-[10px] py-0 px-1.5 font-semibold">
+                            Volunteer
+                          </Badge>
+                        )}
+                      </div>
                       {session.manualAdjustmentReason && (
                         <span className="text-[11px] text-amber-600 bg-amber-500/5 border border-amber-500/10 px-1.5 py-0.5 rounded font-normal inline-block max-w-xs truncate" title={`Reason: ${session.manualAdjustmentReason}`}>
                           Reason: {session.manualAdjustmentReason}

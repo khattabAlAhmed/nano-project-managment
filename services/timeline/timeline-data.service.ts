@@ -26,6 +26,7 @@ export interface TimelineTask {
     notes?: string | null;
     documentationUrl?: string | null;
     scheduledDate?: string;
+    isVolunteer?: boolean;
   };
 }
 
@@ -46,12 +47,13 @@ export interface TimelineData {
 
 export async function getTimelineData(
   projectId: string,
-  groupBy: "activity" | "center" = "activity"
+  groupBy: "activity" | "center" = "activity",
+  type: "all" | "core" | "volunteer" = "all"
 ): Promise<TimelineData> {
   const now = new Date();
 
   // Fetch project, activities, and sessions in parallel
-  const [project, activities, sessions] = await Promise.all([
+  const [project, rawActivities, rawSessions] = await Promise.all([
     prisma.project.findUnique({
       where: { id: projectId },
       select: { startDate: true, endDate: true },
@@ -80,6 +82,19 @@ export async function getTimelineData(
   if (!project) {
     throw new Error(`Project ${projectId} not found`);
   }
+
+  // Filter based on type
+  const activities = rawActivities.filter((a) => {
+    if (type === "core") return a.isVolunteer === false;
+    if (type === "volunteer") return a.isVolunteer === true;
+    return true;
+  });
+
+  const sessions = rawSessions.filter((s) => {
+    if (type === "core") return s.activity?.isVolunteer === false;
+    if (type === "volunteer") return s.activity?.isVolunteer === true;
+    return true;
+  });
 
   const projectStart = formatDate(project.startDate);
   const projectEnd = formatDate(project.endDate);
@@ -175,12 +190,13 @@ function buildActivityGroupedTasks(
       end: formatDate(endDate),
       progress,
       status: dominantStatus,
-      customClass: `gantt-status-${dominantStatus.toLowerCase()}`,
+      customClass: `gantt-status-${dominantStatus.toLowerCase()}${activity.isVolunteer ? " gantt-volunteer" : ""}`,
       meta: {
         type: "activity",
         activityId: activity.id,
         activityTitle: activity.title,
         isDelayed: hasDelayed,
+        isVolunteer: activity.isVolunteer,
       },
     });
   }
@@ -216,7 +232,7 @@ export function buildSessionTasks(
         end: formatDate(endDate),
         progress,
         status: effectiveStatus,
-        customClass: `gantt-status-${effectiveStatus.toLowerCase()}`,
+        customClass: `gantt-status-${effectiveStatus.toLowerCase()}${s.activity?.isVolunteer ? " gantt-volunteer" : ""}`,
         meta: {
           type: "session" as const,
           activityId: s.activityId,
@@ -232,6 +248,7 @@ export function buildSessionTasks(
           notes: s.notes,
           documentationUrl: s.documentationUrl,
           scheduledDate: formatDate(scheduledDate),
+          isVolunteer: s.activity?.isVolunteer,
         },
       };
     });

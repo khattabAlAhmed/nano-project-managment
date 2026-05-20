@@ -92,6 +92,8 @@
     --color-status-warning-foreground: var(--status-warning-foreground);
     --color-status-info: var(--status-info);
     --color-status-info-foreground: var(--status-info-foreground);
+    --color-status-volunteer: var(--status-volunteer);
+    --color-status-volunteer-foreground: var(--status-volunteer-foreground);
 }
 
 /* ============================================================
@@ -173,6 +175,8 @@
     --status-warning-foreground: oklch(0.30 0.10 75);
     --status-info: oklch(0.76 0.10 240);
     --status-info-foreground: oklch(0.28 0.08 240);
+    --status-volunteer: oklch(0.68 0.16 310);
+    --status-volunteer-foreground: oklch(0.28 0.08 310);
 }
 
 /* ============================================================
@@ -253,6 +257,8 @@
     --status-warning-foreground: oklch(0.92 0.06 75);
     --status-info: oklch(0.52 0.10 240);
     --status-info-foreground: oklch(0.92 0.04 240);
+    --status-volunteer: oklch(0.58 0.14 310);
+    --status-volunteer-foreground: oklch(0.92 0.04 310);
 }
 
 /* ============================================================

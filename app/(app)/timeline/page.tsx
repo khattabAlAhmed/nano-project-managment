@@ -20,6 +20,7 @@ import {
   X,
   Info,
   ExternalLink,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -62,6 +63,7 @@ interface TimelineMeta {
   notes?: string | null;
   documentationUrl?: string | null;
   scheduledDate?: string;
+  isVolunteer?: boolean;
 }
 
 interface TimelineResponse {
@@ -86,6 +88,7 @@ export default function TimelinePage() {
   const [viewType, setViewType] = React.useState<ViewType>("activity");
   const [groupBy, setGroupBy] = React.useState<GroupBy>("activity");
   const [zoom, setZoom] = React.useState<ZoomLevel>("Month");
+  const [activityType, setActivityType] = React.useState<"all" | "core" | "volunteer">("all");
 
   // Data
   const [timelineData, setTimelineData] = React.useState<TimelineResponse | null>(null);
@@ -101,8 +104,9 @@ export default function TimelinePage() {
     if (!activeProject) return;
     setLoading(true);
     try {
+      const typeParam = activityType !== "all" ? `&type=${activityType}` : "";
       const res = await fetch(
-        `/api/projects/${activeProject.id}/timeline?groupBy=${groupBy}`
+        `/api/projects/${activeProject.id}/timeline?groupBy=${groupBy}${typeParam}`
       );
       if (!res.ok) throw new Error("Failed to load timeline data");
       const data: TimelineResponse = await res.json();
@@ -115,7 +119,12 @@ export default function TimelinePage() {
           const sessions = await sessRes.json();
           const now = new Date();
           const mappedTasks = sessions
-            .filter((s: any) => s.status !== "CANCELLED")
+            .filter((s: any) => {
+              if (s.status === "CANCELLED") return false;
+              if (activityType === "core" && s.activity?.isVolunteer) return false;
+              if (activityType === "volunteer" && !s.activity?.isVolunteer) return false;
+              return true;
+            })
             .map((s: any) => {
               const scheduledDate = new Date(s.scheduledDate);
               const endDate = new Date(scheduledDate);
@@ -125,6 +134,7 @@ export default function TimelinePage() {
                 s.status === "DELAYED" ||
                 (!isCompleted && scheduledDate < now);
               const effectiveStatus = isDelayed ? "DELAYED" : s.status;
+              const isVol = s.activity?.isVolunteer || false;
               return {
                 id: `session-${s.id}`,
                 name: `${s.activity?.title || "Session"} — ${s.center?.name || "Unassigned"}`,
@@ -132,7 +142,7 @@ export default function TimelinePage() {
                 end: formatDate(endDate),
                 progress: isCompleted ? 100 : 0,
                 status: effectiveStatus,
-                customClass: `gantt-status-${effectiveStatus.toLowerCase()}`,
+                customClass: `gantt-status-${effectiveStatus.toLowerCase()}${isVol ? " gantt-volunteer" : ""}`,
                 meta: {
                   type: "session" as const,
                   activityId: s.activityId,
@@ -148,6 +158,7 @@ export default function TimelinePage() {
                   notes: s.notes,
                   documentationUrl: s.documentationUrl,
                   scheduledDate: formatDate(scheduledDate),
+                  isVolunteer: isVol,
                 },
               };
             });
@@ -159,7 +170,7 @@ export default function TimelinePage() {
     } finally {
       setLoading(false);
     }
-  }, [activeProject, groupBy, viewType]);
+  }, [activeProject, groupBy, viewType, activityType]);
 
   React.useEffect(() => {
     if (activeProject) {
@@ -290,6 +301,31 @@ export default function TimelinePage() {
               />
             </div>
           )}
+
+          {/* Divider */}
+          <div className="w-px h-6 bg-border hidden sm:block" />
+
+          {/* Type Filter (Core / Volunteer) */}
+          <div className="flex items-center gap-1 bg-muted/50 rounded-lg p-0.5">
+            <ToolbarButton
+              active={activityType === "all"}
+              onClick={() => setActivityType("all")}
+              icon={<Layers className="size-3.5" />}
+              label="All Types"
+            />
+            <ToolbarButton
+              active={activityType === "core"}
+              onClick={() => setActivityType("core")}
+              icon={<CheckCircle className="size-3.5" />}
+              label="Core"
+            />
+            <ToolbarButton
+              active={activityType === "volunteer"}
+              onClick={() => setActivityType("volunteer")}
+              icon={<Sparkles className="size-3.5" />}
+              label="Volunteer"
+            />
+          </div>
         </div>
 
         {/* Right side: Zoom controls */}
@@ -379,6 +415,7 @@ export default function TimelinePage() {
             <LegendItem color="bg-status-completed" label="Completed" />
             <LegendItem color="bg-status-delayed" label="Delayed" />
             <LegendItem color="bg-status-in-progress" label="In Progress" />
+            <LegendItem color="bg-status-volunteer" label="Volunteer" />
           </div>
         </>
       )}

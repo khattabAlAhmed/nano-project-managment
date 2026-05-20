@@ -161,6 +161,23 @@
   fill: var(--status-rejected-foreground);
 }
 
+/* Volunteer bar visual distinction */
+.gantt .gantt-volunteer .bar {
+  fill: var(--status-volunteer);
+  opacity: 0.8;
+  stroke: var(--status-volunteer-foreground);
+  stroke-width: 1.5px;
+  stroke-dasharray: 4 2;
+}
+
+.gantt .gantt-volunteer .bar-progress {
+  fill: var(--status-volunteer);
+}
+
+.gantt .gantt-volunteer .bar-label {
+  fill: var(--status-volunteer-foreground);
+}
+
 /* ─── Bar hover effects ────────────────────────────────── */
 
 .gantt .bar-wrapper:hover .bar {
