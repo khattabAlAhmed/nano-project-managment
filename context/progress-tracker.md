@@ -8,7 +8,7 @@ Update this file after every meaningful implementation change.
 
 ## Current Goal
 
-- Feature 06: Centers Management — ✅ Completed
+- Feature 07: Project-Center Assignment — ✅ Completed
 
 ## Completed
 
@@ -82,6 +82,14 @@ Update this file after every meaningful implementation change.
   - [x] Build global Centers page table UI
   - [x] Build Create/Edit Center Dialogs
   - [x] Build Archive Center Alert Dialog
+- Feature 07: Project-Center Assignment
+  - [x] Implement GET `/api/projects/[projectId]/centers` API endpoint
+  - [x] Implement POST `/api/projects/[projectId]/centers` API endpoint
+  - [x] Implement DELETE `/api/projects/[projectId]/centers/[centerId]` API endpoint
+  - [x] Build Assignment Table UI on Settings page
+  - [x] Build Assign Center Dialog UI
+  - [x] Build Remove Assignment confirmation dialog
+  - [x] Enforce project-center assignment validation constraints
 
 ## In Progress
 
@@ -89,7 +97,7 @@ Update this file after every meaningful implementation change.
 
 ## Next Up
 
-- Feature 07
+- Feature 08
 
 ## Open Questions
 
@@ -103,4 +111,6 @@ Update this file after every meaningful implementation change.
 - Feature 04: PostgreSQL via Prisma Postgres, modular schema files in prisma/models/, prisma.config.ts for CLI config, Prisma v7 Pg driver adapter
 - Feature 05: REST API endpoints in app/api/projects/, Client-side ProjectProvider state preservation in localStorage, dynamic CRUD modals integrated directly in navbar and project selector, custom empty states for dashboard. Modified `prisma.config.ts` to use `"prisma"` directory recursively for GA schema folder compilation.
 - Feature 06: Modified `Center` schema with `archivedAt` datetime column for soft-archival. Created RESTful endpoints for `/api/centers` (GET list, POST create) and `/api/centers/[centerId]` (PATCH update, DELETE archive) with RBAC authorization. Created `/api/users` endpoint for querying potential managers. Built global centers page with responsive table, search, and Base UI dialog/alert-dialog actions.
+- Feature 07: Implemented `ProjectCenter` relational mapping endpoints in `/api/projects/[projectId]/centers` and sub-resource `/api/projects/[projectId]/centers/[centerId]`. Reconfigured the dynamic Settings page into a clean tabbed UI containing Project Settings configuration and active Center Assignments datatable layout using searchable, multi-modal dialog operations.
+
 
