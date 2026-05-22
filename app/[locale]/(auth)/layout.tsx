@@ -1,8 +1,14 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+
 export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const t = useTranslations("auth");
+
   return (
     <div className="flex min-h-screen">
       {/* Branding panel — desktop only */}
@@ -15,36 +21,34 @@ export default function AuthLayout({
           </div>
           <div>
             <h1 className="text-base font-semibold text-text-primary">
-              Field Project Management
+              {t("fieldProjectManagement")}
             </h1>
-            <p className="text-xs text-text-muted">Operations Platform</p>
+            <p className="text-xs text-text-muted">{t("operationsPlatform")}</p>
           </div>
         </div>
 
         <div className="flex flex-col gap-4 max-w-sm">
           <p className="text-sm text-text-secondary leading-relaxed">
-            Plan, schedule, and track field operations across multiple centers.
-            Manage activities, sessions, approvals, and reporting — all in one
-            place.
+            {t("authDescription")}
           </p>
           <div className="flex flex-col gap-2 text-xs text-text-muted">
             <div className="flex items-center gap-2">
               <div className="size-1.5 rounded-full bg-status-completed" />
-              <span>Multi-project operations management</span>
+              <span>{t("multiProject")}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="size-1.5 rounded-full bg-status-in-progress" />
-              <span>Session scheduling and distribution</span>
+              <span>{t("sessionScheduling")}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="size-1.5 rounded-full bg-status-approved" />
-              <span>Approval workflows and progress tracking</span>
+              <span>{t("approvalWorkflows")}</span>
             </div>
           </div>
         </div>
 
         <p className="text-xs text-text-disabled">
-          © {new Date().getFullYear()} Field PM
+          © {new Date().getFullYear()} {t("copyright")}
         </p>
       </div>
 

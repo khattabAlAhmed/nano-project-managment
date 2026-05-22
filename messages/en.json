@@ -711,7 +711,8 @@
     "authDescription": "Plan, schedule, and track field operations across multiple centers. Manage activities, sessions, approvals, and reporting — all in one place.",
     "multiProject": "Multi-project operations management",
     "sessionScheduling": "Session scheduling and distribution",
-    "approvalWorkflows": "Approval workflows and progress tracking"
+    "approvalWorkflows": "Approval workflows and progress tracking",
+    "copyright": "Field PM"
   },
   "ai": {
     "title": "AI Copilot Assistant",
