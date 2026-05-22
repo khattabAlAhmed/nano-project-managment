@@ -45,11 +45,12 @@ export function AiAssistantPanel({ open, onOpenChange }: AiAssistantPanelProps) 
   const { activeProject } = useProject();
   const t = useTranslations("ai");
 
-  // Conversation state (in-memory only)
+  // State
   const [messages, setMessages] = React.useState<ConversationMessage[]>([]);
   const [input, setInput] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = React.useState<string>("all");
 
   // Refs
   const scrollRef = React.useRef<HTMLDivElement>(null);
@@ -73,35 +74,54 @@ export function AiAssistantPanel({ open, onOpenChange }: AiAssistantPanelProps) 
   React.useEffect(() => {
     setMessages([]);
     setError(null);
+    setActiveCategory("all");
   }, [activeProject?.id]);
 
-  // Suggested prompts
-  const suggestions = React.useMemo(
+  // Categories list
+  const categories = React.useMemo(
     () => [
-      {
-        icon: Clock,
-        text: t("suggestion1"),
-      },
-      {
-        icon: BarChart3,
-        text: t("suggestion2"),
-      },
-      {
-        icon: Building2,
-        text: t("suggestion3"),
-      },
-      {
-        icon: CheckCircle2,
-        text: t("suggestion4"),
-      },
+      { id: "all", label: t("categories.all") },
+      { id: "progress", label: t("categories.progress") },
+      { id: "delay", label: t("categories.delay") },
+      { id: "approvals", label: t("categories.approvals") },
+      { id: "centers", label: t("categories.centers") },
+      { id: "timeline", label: t("categories.timeline") },
     ],
     [t]
   );
 
+  // Dynamic Suggested prompts
+  const suggestions = React.useMemo(() => {
+    if (activeCategory === "all") {
+      return [
+        { icon: Clock, text: t("suggestion1") },
+        { icon: BarChart3, text: t("suggestion2") },
+        { icon: Building2, text: t("suggestion3") },
+        { icon: CheckCircle2, text: t("suggestion4") },
+      ];
+    }
+
+    const iconsMap: Record<string, any> = {
+      progress: BarChart3,
+      delay: AlertCircle,
+      approvals: CheckCircle2,
+      centers: Building2,
+      timeline: Clock,
+    };
+    const icon = iconsMap[activeCategory] || Bot;
+
+    try {
+      const array = t.raw(`suggestions.${activeCategory}`) as string[];
+      return array.map((text) => ({ icon, text }));
+    } catch {
+      return [];
+    }
+  }, [activeCategory, t]);
+
   // ─── Send Message ───────────────────────────────────────────────────────────
 
   const sendMessage = React.useCallback(
-    async (content: string) => {
+    async (content: string, categoryOverride?: string) => {
       if (!content.trim() || !activeProject || isLoading) return;
 
       const userMessage: ConversationMessage = {
@@ -123,12 +143,15 @@ export function AiAssistantPanel({ open, onOpenChange }: AiAssistantPanelProps) 
           { role: "user" as const, content: content.trim() },
         ];
 
+        const categoryParam = categoryOverride || (activeCategory !== "all" ? activeCategory : undefined);
+
         const res = await fetch("/api/ai/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             projectId: activeProject.id,
             messages: apiMessages,
+            category: categoryParam,
           }),
         });
 
@@ -152,7 +175,7 @@ export function AiAssistantPanel({ open, onOpenChange }: AiAssistantPanelProps) 
         setIsLoading(false);
       }
     },
-    [activeProject, isLoading, messages, t]
+    [activeProject, isLoading, messages, activeCategory, t]
   );
 
   // ─── Handlers ───────────────────────────────────────────────────────────────
@@ -179,7 +202,6 @@ export function AiAssistantPanel({ open, onOpenChange }: AiAssistantPanelProps) 
         .reverse()
         .find((m) => m.role === "user");
       if (lastUserMsg) {
-        // Remove the last user message so it can be re-sent
         setMessages((prev) => prev.filter((m) => m.id !== lastUserMsg.id));
         setError(null);
         sendMessage(lastUserMsg.content);
@@ -246,6 +268,31 @@ export function AiAssistantPanel({ open, onOpenChange }: AiAssistantPanelProps) 
           </div>
         </SheetHeader>
 
+        {/* ── Category Pill Filters ── */}
+        {activeProject && (
+          <div className="px-4 py-2.5 bg-muted/20 border-b border-border/40 shrink-0">
+            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth py-1 -my-1">
+              {categories.map((cat) => {
+                const isActive = activeCategory === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    onClick={() => setActiveCategory(cat.id)}
+                    className={`px-3 py-1 rounded-full text-[10px] font-medium transition-all shrink-0 border ${
+                      isActive
+                        ? "bg-primary border-primary text-primary-foreground shadow-sm"
+                        : "bg-background border-border/60 text-text-secondary hover:bg-muted/80 hover:text-text-primary"
+                    }`}
+                  >
+                    {cat.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* ── Messages Area ── */}
         <div className="flex-1 overflow-hidden">
           <ScrollArea className="h-full">
@@ -265,11 +312,37 @@ export function AiAssistantPanel({ open, onOpenChange }: AiAssistantPanelProps) 
                     </p>
                   </div>
 
+                  {/* ── Quick Action Card ── */}
+                  {activeCategory !== "all" && activeProject && (
+                    <div className="w-full max-w-[320px] p-3.5 rounded-xl border border-primary/15 bg-primary/[0.01] flex flex-col gap-2.5 shadow-sm">
+                      <div className="flex items-center gap-2">
+                        <div className="size-5 rounded bg-primary/10 flex items-center justify-center">
+                          <Sparkles className="size-3 text-primary animate-pulse shrink-0" />
+                        </div>
+                        <span className="text-[10px] font-semibold text-text-primary">
+                          {t(`categories.${activeCategory}`)} Diagnostics
+                        </span>
+                      </div>
+                      <p className="text-[10px] text-text-secondary leading-normal">
+                        One-click operational diagnostics powered by focused, real-time database snapshots.
+                      </p>
+                      <Button
+                        type="button"
+                        onClick={() => sendMessage(t(`quickActions.${activeCategory}`))}
+                        disabled={isLoading}
+                        className="w-full bg-primary hover:bg-primary/95 text-primary-foreground text-[10px] font-semibold py-1.5 h-8 rounded-lg transition-all"
+                      >
+                        {t(`quickActions.${activeCategory}`)}
+                      </Button>
+                    </div>
+                  )}
+
                   {/* Suggestion chips */}
                   <div className="grid gap-2 w-full max-w-[320px]">
                     {suggestions.map((suggestion, i) => (
                       <button
                         key={i}
+                        type="button"
                         onClick={() => handleSuggestionClick(suggestion.text)}
                         disabled={!activeProject}
                         className="group flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg border border-border/60 bg-card hover:bg-accent hover:border-primary/20 transition-all text-start disabled:opacity-50 disabled:cursor-not-allowed"

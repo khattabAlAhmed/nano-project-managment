@@ -2,24 +2,28 @@
  * System prompt template for the AI operational assistant.
  *
  * Defines the assistant's persona, scope boundaries, and formatting rules.
- * Project context is injected dynamically before each request.
+ * Tailors prompt instructions dynamically depending on the selected insight category.
  */
 
+import { formatContextBlock } from "./context-formatter";
+
 /**
- * Build the full system prompt with injected project context.
+ * Build the full system prompt with injected project context and tailored category focus guidelines.
  */
-export function buildSystemPrompt(projectContext: string): string {
+export function buildSystemPrompt(projectContext: string, category?: string): string {
+  const categoryGuideline = category ? getCategorySystemGuideline(category) : "";
+
   return `${PERSONA_PROMPT}
 
 ${RULES_PROMPT}
 
 ${FORMAT_PROMPT}
 
---- BEGIN PROJECT CONTEXT ---
-${projectContext}
---- END PROJECT CONTEXT ---
+${categoryGuideline}
 
-Use the project context above to answer questions accurately. If the data doesn't contain enough information to answer, say so clearly. Never fabricate metrics or numbers.`;
+${formatContextBlock("Injected Database Telemetry", projectContext)}
+
+Use the project context above to answer questions accurately. If the data doesn't contain enough information to answer, say so clearly. Never fabricate metrics, numbers, or recommendations unsupported by the data. Remain advisory-only.`;
 }
 
 // ─── Prompt Components ──────────────────────────────────────────────────────────
@@ -42,9 +46,49 @@ const RULES_PROMPT = `## Scope Rules
 
 const FORMAT_PROMPT = `## Response Format
 
-- Keep responses under 300 words unless the user asks for a detailed breakdown.
+- Keep responses under 350 words unless the user asks for a detailed breakdown.
 - Use bullet points for lists and comparisons.
 - Use bold for key metrics and numbers.
 - Use tables when comparing centers or activities (markdown format).
 - When citing numbers, be specific (e.g., "12 of 48 sessions" not "about a quarter").
 - End with a brief actionable recommendation when relevant.`;
+
+/**
+ * Get tailored system guidance guidelines depending on the active category.
+ */
+function getCategorySystemGuideline(category: string): string {
+  switch (category) {
+    case "progress":
+      return `## Category-Specific Focus: Project Progress Summaries
+- Focus deeply on core and volunteer completion rates.
+- Interpret and highlight the "Execution Pace & Forecast" calculations. Explain clearly whether the project is projected to finish before or after the target end date.
+- Detail the remaining workload countdown.`;
+
+    case "delay":
+      return `## Category-Specific Focus: Delay & Bottleneck Analysis
+- Immediately list the specific overdue sessions, highlighting centers and the assigned physical managers who require follow-up.
+- Analyze the "Delayed & Overdue Centers" table, highlighting branches struggling with timeline compliance.
+- Pinpoint bottleneck activities and suggest concrete advisory adjustments.`;
+
+    case "approvals":
+      return `## Category-Specific Focus: Approvals & Audit Reviews
+- Call attention to the size and age of the pending review queue. Warn the Project Manager of delayed turnaround performance.
+- Detail "Rejection & Revision Feedback Trends" to surface recurrent quality issues (e.g., missing Drive links) so the PM can address root causes.
+- Highlight the Google Drive documentation compliance rate and missing evidence counts.`;
+
+    case "centers":
+      return `## Category-Specific Focus: Participating Centers Performance
+- Group physical center branches into "Top Performing" vs "At-Risk/Underperforming" branches by sorting completion rates.
+- Evaluate average review turnaround times per branch.
+- Highlight volunteer engagement stats at each branch. Suggest capacity balancing where needed.`;
+
+    case "timeline":
+      return `## Category-Specific Focus: Timeline & Scheduling Health
+- Highlight weekly scheduling concentrations (weeks with session counts peak above average weekly load).
+- Flag future peak workloads that risk overloading center capacities.
+- Detail center execution imbalances (e.g., high differences between max and min center loads).`;
+
+    default:
+      return "";
+  }
+}

@@ -231,6 +231,14 @@ Update this file after every meaningful implementation change.
   - [x] Add bilingual translations (en.json + ar.json)
   - [x] Verify production build passes
 
+- Feature 24: AI Project Insights
+  - [x] Create modular context builders in `services/ai/context-builders/`
+  - [x] Separate prompt templates in `services/ai/prompts/`
+  - [x] Update API route `app/api/ai/chat/route.ts` to support category-specific parameters
+  - [x] Implement frontend UI enhancements (categories, suggestions, quick action buttons) in `components/ai/ai-assistant-panel.tsx`
+  - [x] Author English and Arabic localized translations in `messages/en.json` and `messages/ar.json`
+  - [x] Verify production build passes
+
 ## In Progress
 
 - None.

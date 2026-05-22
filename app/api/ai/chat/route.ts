@@ -2,14 +2,21 @@ import { NextResponse } from "next/server";
 import { getOrCreateDbUser } from "@/lib/auth";
 import { Role } from "@/types/roles";
 import { chatCompletion, type ChatMessage } from "@/services/ai/openrouter";
-import { buildFullProjectContext } from "@/services/ai/context-builders";
+import {
+  buildFullProjectContext,
+  buildProjectSummaryContext,
+  buildDelayAnalysisContext,
+  buildCenterPerformanceContext,
+  buildApprovalAnalysisContext,
+  buildTimelineHealthContext,
+} from "@/services/ai/context-builders";
 import { buildSystemPrompt } from "@/services/ai/prompts/system-prompt";
 import { prisma } from "@/lib/prisma";
 
 /**
  * POST /api/ai/chat
  *
- * Accepts a projectId and conversation messages.
+ * Accepts a projectId, conversation messages, and an optional category filter.
  * Enforces authentication, PROJECT_MANAGER role, and project membership.
  * Injects project context and returns the assistant response.
  */
@@ -31,9 +38,10 @@ export async function POST(request: Request) {
 
     // 3. Parse request body
     const body = await request.json();
-    const { projectId, messages } = body as {
+    const { projectId, messages, category } = body as {
       projectId?: string;
       messages?: { role: string; content: string }[];
+      category?: string;
     };
 
     if (!projectId || typeof projectId !== "string") {
@@ -46,6 +54,15 @@ export async function POST(request: Request) {
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json(
         { error: "messages array is required and must not be empty" },
+        { status: 400 }
+      );
+    }
+
+    // Validate optional category
+    const validCategories = ["progress", "delay", "approvals", "centers", "timeline"];
+    if (category && !validCategories.includes(category)) {
+      return NextResponse.json(
+        { error: `Invalid category: must be one of ${validCategories.join(", ")}` },
         { status: 400 }
       );
     }
@@ -63,9 +80,23 @@ export async function POST(request: Request) {
       );
     }
 
-    // 5. Build project context and system prompt
-    const projectContext = await buildFullProjectContext(projectId);
-    const systemPrompt = buildSystemPrompt(projectContext);
+    // 5. Build project context and system prompt depending on category
+    let projectContext = "";
+    if (category === "progress") {
+      projectContext = await buildProjectSummaryContext(projectId);
+    } else if (category === "delay") {
+      projectContext = await buildDelayAnalysisContext(projectId);
+    } else if (category === "approvals") {
+      projectContext = await buildApprovalAnalysisContext(projectId);
+    } else if (category === "centers") {
+      projectContext = await buildCenterPerformanceContext(projectId);
+    } else if (category === "timeline") {
+      projectContext = await buildTimelineHealthContext(projectId);
+    } else {
+      projectContext = await buildFullProjectContext(projectId);
+    }
+
+    const systemPrompt = buildSystemPrompt(projectContext, category);
 
     // 6. Prepare messages for OpenRouter
     const chatMessages: ChatMessage[] = [

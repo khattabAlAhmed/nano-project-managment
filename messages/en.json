@@ -729,6 +729,48 @@
     "retry": "Retry Request",
     "placeholder": "Ask about delays, progress, or center metrics...",
     "noProjectPlaceholder": "Please select a project to enable AI...",
-    "disclaimer": "AI answers are generated based on active database snapshots. Always verify execution schedules manually."
+    "disclaimer": "AI answers are generated based on active database snapshots. Always verify execution schedules manually.",
+    "categories": {
+      "all": "All",
+      "progress": "Progress",
+      "delay": "Delays",
+      "approvals": "Approvals",
+      "centers": "Centers",
+      "timeline": "Timeline"
+    },
+    "quickActions": {
+      "progress": "Run Progress Diagnostics",
+      "delay": "Scan for Overdue Blockages",
+      "approvals": "Audit Approvals Pipeline",
+      "centers": "Assess Center Performance",
+      "timeline": "Inspect Timeline Health"
+    },
+    "suggestions": {
+      "progress": [
+        "Explain core program completion pace.",
+        "Show forecasted ETA based on current speed.",
+        "List remaining workload session tallies."
+      ],
+      "delay": [
+        "List the oldest overdue sessions.",
+        "Which center branches have the highest delays?",
+        "Identify our critical activity bottlenecks."
+      ],
+      "approvals": [
+        "Check the pending manager review queue.",
+        "What are the common rejection trends?",
+        "What is our average approval turnaround time?"
+      ],
+      "centers": [
+        "Highlight the top performing centers.",
+        "Are there any underperforming center branches?",
+        "Compare volunteer engagement rates."
+      ],
+      "timeline": [
+        "Identify weekly execution density spikes.",
+        "What are the risky future workloads?",
+        "Is there an execution load imbalance?"
+      ]
+    }
   }
 }
